@@ -1,6 +1,8 @@
 package gwat
 
 const (
-	baseURL = "https://api.twitch.tv/helix/"
-	clipsEP = "/clips"
+	BaseURL  = "https://api.twitch.tv/helix/"
+	ClipsEP  = "/clips"
+	GamesEP  = "/games"
+	StreamEP = "/streams"
 )
