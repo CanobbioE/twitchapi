@@ -1,6 +1,10 @@
 package gwat
 
-import "net/http"
+import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+)
 
 // Header represent a simplified http.Header.
 type Header struct {
@@ -25,4 +29,14 @@ func (c *Client) request(method, uri string, h Header) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+// parseResult reads a json from src into dst
+func parseResult(src *http.Response, dst interface{}) error {
+	body, err := ioutil.ReadAll(src.Body)
+	if err != nil {
+		return err
+	}
+	json.Unmarshal(body, dst)
+	return nil
 }
