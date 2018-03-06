@@ -56,12 +56,9 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) (DataClip, error) {
 
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
+	if err := parseResult(res, &retDataClip); err != nil {
 		return retDataClip, err
 	}
-
-	json.Unmarshal(body, &retDataClip)
 	return retDataClip, nil
 }
 

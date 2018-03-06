@@ -1,9 +1,7 @@
 package gwat
 
 import (
-	"encoding/json"
 	"errors"
-	"io/ioutil"
 )
 
 // Game represents a game as described by the twitch API documentation.
@@ -22,6 +20,7 @@ type games struct {
 // At least one between ids and names must be specified.
 func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 	uri := BaseURL + GamesEP
+	retGames := games{}
 
 	// checking input
 	if ids == nil && names == nil {
@@ -52,20 +51,8 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 	}
 	defer res.Body.Close()
 
-	// parsing result
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
+	if err := parseResult(res, &retGames); err != nil {
 		return nil, err
 	}
-	retGames := games{}
-	json.Unmarshal(body, &retGames)
 	return retGames.Data, nil
-}
-
-// TODO: use net/url library
-func addParameters(uri *string, paramName string, values []string) {
-	for _, val := range values {
-		*uri += val
-		*uri += "&" + paramName + "="
-	}
 }
