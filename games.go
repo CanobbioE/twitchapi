@@ -2,6 +2,7 @@ package gwat
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 )
 
@@ -24,10 +25,10 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 
 	// checking input
 	if ids == nil && names == nil {
-		return nil, error.New("At least one id or name must be specified")
+		return nil, errors.New("At least one id or name must be specified")
 	}
 	if len(ids) > 10 || len(names) > 10 {
-		return nil, error.New("A maximum of 10 ids or names can be specified")
+		return nil, errors.New("A maximum of 10 ids or names can be specified")
 	}
 
 	// creating uri and header
@@ -58,7 +59,7 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 	}
 	retGames := games{}
 	json.Unmarshal(body, &retGames)
-	return retGames.Data
+	return retGames.Data, nil
 }
 
 // TODO: use net/url library

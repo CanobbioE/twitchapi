@@ -2,6 +2,7 @@ package gwat
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 )
 
@@ -27,49 +28,49 @@ type DataClip struct {
 	editURL string `json:"edit_url"`
 }
 
-// CreateClip creates a clip and returns id and edit URL for the new clip.
+// CreateClip creates a clip and returns the information associated to the new clip.
 // CreateClip requires an authentication token (authTkn) with scope 'clips:edit
 // and the id of the stream from which the clip will be made (broadcasterID).
 func (c *Client) CreateClip(broadcasterID, authTkn string) (DataClip, error) {
+	retDataClip := DataClip{}
 	uri := BaseURL + ClipsEP
 
-	if broadcasterID != nil {
+	if broadcasterID != "" {
 		uri += "?broadcaster_id=" + broadcasterID
 	} else {
-		return nil, error.New("broadcasterID must be specified")
+		return retDataClip, errors.New("broadcasterID must be specified")
 	}
 
-	if authTkn != nil {
-		h := Header{
-			Field: "Authorization",
-			Value: "Bearer " + authTkn,
-		}
+	h := Header{}
+	if authTkn != "" {
+		h.Field = "Authorization"
+		h.Value = "Bearer " + authTkn
 	} else {
-		return nil, error.New("An authorization token is needed")
+		return retDataClip, errors.New("An authorization token is needed")
 	}
 
 	res, err := c.request("POST", uri, h)
 	if err != nil {
-		return nil, err
+		return retDataClip, err
 	}
 
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res, body)
+	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return nil, err
+		return retDataClip, err
 	}
 
-	retDataClip := DataClip{}
 	json.Unmarshal(body, &retDataClip)
 	return retDataClip, nil
 }
 
 // GetClip gets information about a clip specified by an optional id.
 func (c *Client) GetClip(id string) (Clip, error) {
+	retClip := Clip{}
 	uri := BaseURL + ClipsEP
 
-	if id != nil {
+	if id != "" {
 		uri += "?id=" + id
 	}
 
@@ -80,16 +81,15 @@ func (c *Client) GetClip(id string) (Clip, error) {
 
 	res, err := c.request("GET", uri, h)
 	if err != nil {
-		return nil, err
+		return retClip, err
 	}
 
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return nil, err
+		return retClip, err
 	}
-	retClip := Clip{}
 	json.Unmarshal(body, &retClip)
 
 	return retClip, nil
