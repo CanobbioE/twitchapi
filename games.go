@@ -2,6 +2,7 @@ package gwat
 
 import (
 	"errors"
+	"strconv"
 )
 
 // Game represents a game as described by the twitch API documentation.
@@ -54,5 +55,39 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 	if err := parseResult(res, &retGames); err != nil {
 		return nil, err
 	}
+	return retGames.Data, nil
+}
+
+// GetTopGames gets games sorted by number of current viewers.
+func (c *Client) GetTopGames(after, before string, first int) ([]Game, error) {
+	uri := BaseURL + GamesEP + TopGamesEP
+	retGames := games{}
+
+	uri += "?"
+	if !isNil(after) {
+		uri += "after=" + after + "&"
+	}
+	if !isNil(before) {
+		uri += "before=" + before + "&"
+	}
+	if !isNil(first) {
+		uri += "first=" + strconv.Itoa(first) + "&"
+	}
+
+	h := Header{
+		Field: "Client-ID",
+		Value: c.ClientID,
+	}
+
+	res, err := c.request("GET", uri, h)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if err := parseResult(res, &retGames); err != nil {
+		return nil, err
+	}
+
 	return retGames.Data, nil
 }
