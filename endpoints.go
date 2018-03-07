@@ -6,4 +6,5 @@ const (
 	GamesEP    = "/games"
 	StreamEP   = "/streams"
 	MetaDataEP = "/metadata"
+	TopGamesEP = "/top"
 )
