@@ -10,6 +10,11 @@ type StreamMetadata struct {
 
 // Overwatch represents the overwatch metadata information.
 type Overwatch struct {
+	Broadcaster OwBroadcaster `json:"broadcaster"`
+}
+
+// OwBroadcaster represents an Overwatch broadcaster.
+type OwBroadcaster struct {
 	Role    string `json:"role"`
 	Name    string `json:"name"`
 	Ability string `json:"ability"`

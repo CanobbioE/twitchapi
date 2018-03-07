@@ -2,6 +2,10 @@ package gwat
 
 import "errors"
 
+type uploadData struct {
+	Data []uploadURL `json:"data"`
+}
+
 // uploadURL represent the response returned by CreateEntitlementGrantsUploadURL.
 type uploadURL struct {
 	url string `json:"url"`
@@ -12,7 +16,6 @@ type uploadURL struct {
 // entitleType is the type of entitlement granted. Only "bulk_drops_grant" is supported.
 func (c *Client) CreateEntitlementGrantsUploadURL(manifestID, entitleType, authTkn string) (string, error) {
 	uri := BaseURL + EntitlementsEP + UploadEP
-	retUploadURL := uploadURL{}
 
 	ml := len(manifestID)
 	if ml > 64 || ml < 1 {
@@ -35,9 +38,10 @@ func (c *Client) CreateEntitlementGrantsUploadURL(manifestID, entitleType, authT
 
 	defer res.Body.Close()
 
+	retUploadURL := uploadData{}
 	if err := parseResult(res, &retUploadURL); err != nil {
 		return "", err
 	}
 
-	return retUploadURL.url, nil
+	return retUploadURL.Data[0].url, nil
 }

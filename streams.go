@@ -25,8 +25,8 @@ type Cursor struct {
 	Cursor string `json:"cursor"`
 }
 
-// QueryParameters represents the optional query string parameters used for API calls.
-type QueryParameters struct {
+// StreamQueryParameters represents the optional query string parameters used for API calls to the "stream" endpoint.
+type StreamQueryParameters struct {
 	After      string   `after`
 	Before     string   `before`
 	ComunityID []string `comunity_id`
@@ -40,7 +40,7 @@ type QueryParameters struct {
 
 // GetStream gets information about active streams using options specified in a QueryParameters struct.
 // Streams are returned sorted by number of current viewers, in descending order.
-func (c *Client) GetStreams(qp QueryParameters) ([]Stream, Cursor, error) {
+func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) {
 	uri := BaseURL + StreamEP
 	retCursor := Cursor{}
 
@@ -60,7 +60,7 @@ func (c *Client) GetStreams(qp QueryParameters) ([]Stream, Cursor, error) {
 
 //GetStreamsMetadata gets metadata information about active streams playing Overwatch or Heartstone.
 // Streams are sorted by number of current viewers, in descending order
-func (c *Client) GetStreamsMetadata(qp QueryParameters) ([]StreamMetadata, Cursor, error) {
+func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata, Cursor, error) {
 	uri := BaseURL + StreamEP + MetaDataEP
 	retCursor := Cursor{}
 

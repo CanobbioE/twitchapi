@@ -44,7 +44,7 @@ func parseResult(src *http.Response, dst interface{}) error {
 }
 
 // streamRequest prepares a stream request whether it's for metadata or not
-func (c *Client) streamRequest(uri *string, qp QueryParameters) (*http.Response, error) {
+func (c *Client) streamRequest(uri *string, qp StreamQueryParameters) (*http.Response, error) {
 	params := parseInput(qp)
 
 	if params["First"].(int) > 100 {
