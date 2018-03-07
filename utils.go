@@ -12,18 +12,17 @@ func parseInput(input interface{}) map[string]interface{} {
 
 	for i := 0; i < s.NumField(); i++ {
 		curr := s.Field(i).Interface()
-		field := getFieldName(input, i)
+		tag := getFieldTag(reflect.TypeOf(input).Elem().FieldByIndex([]int{i}))
 		if !isNil(curr) {
-			params[field] = curr
+			params[tag] = curr
 		}
 	}
 	return params
 }
 
-// getFieldName gets the n-th name of the given struct (s)
-func getFieldName(s interface{}, n int) string {
-	// I feel bad for this
-	return reflect.Indirect(reflect.ValueOf(s)).Type().Field(n).Name
+// getFieldTag gets the tag of the given field (f)
+func getFieldTag(f reflect.StructField) string {
+	return string(f.Tag)
 }
 
 // isNil returns true if the given value (val) is equal to the zero of its type
