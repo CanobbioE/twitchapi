@@ -35,14 +35,14 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) (DataClip, error) {
 	retDataClip := DataClip{}
 	uri := BaseURL + ClipsEP
 
-	if broadcasterID != "" {
+	if !isNil(broadcasterID) {
 		uri += "?broadcaster_id=" + broadcasterID
 	} else {
 		return retDataClip, errors.New("broadcasterID must be specified")
 	}
 
 	h := Header{}
-	if authTkn != "" {
+	if !isNil(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
@@ -67,7 +67,7 @@ func (c *Client) GetClip(id string) (Clip, error) {
 	retClip := Clip{}
 	uri := BaseURL + ClipsEP
 
-	if id != "" {
+	if !isNil(id) {
 		uri += "?id=" + id
 	}
 
