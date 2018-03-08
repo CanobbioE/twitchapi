@@ -47,14 +47,14 @@ func parseResult(src *http.Response, dst interface{}) error {
 func (c *Client) streamRequest(uri *string, qp StreamQueryParameters) (*http.Response, error) {
 	params := parseInput(qp)
 
-	if params["First"].(int) > 100 {
+	if params["first"].(int) > 100 {
 		err := errors.New("\"First\" parameter cannot be greater than 100")
 		return &http.Response{}, err
 	}
 
 	*uri += "?"
 	for k, v := range params {
-		if k == "ComunityID" {
+		if k == "comunity_id" {
 			addParameters(uri, "comunity_id", v.([]string))
 		} else {
 			*uri += fmt.Sprintf("%s=%v&", k, v)
