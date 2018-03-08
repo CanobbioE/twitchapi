@@ -9,4 +9,6 @@ const (
 	TopGamesEP     = "/top"
 	EntitlementsEP = "/entitlements"
 	UploadEP       = "/upload"
+	UsersEP        = "/users"
+	FollowsEP      = "/follows"
 )
