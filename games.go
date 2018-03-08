@@ -5,18 +5,6 @@ import (
 	"strconv"
 )
 
-// Game represents a game as described by the twitch API documentation.
-type Game struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	BoxArtURL string `json:"box_art_url"`
-}
-
-// games represents an array of Game
-type games struct {
-	Data []Game `json:data`
-}
-
 // GetGames gets information about one or more games specified by id and/or name.
 // At least one between ids and names must be specified.
 func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {

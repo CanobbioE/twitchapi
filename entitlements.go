@@ -2,15 +2,6 @@ package gwat
 
 import "errors"
 
-type uploadData struct {
-	Data []uploadURL `json:"data"`
-}
-
-// uploadURL represent the response returned by CreateEntitlementGrantsUploadURL.
-type uploadURL struct {
-	url string `json:"url"`
-}
-
 // CreateEntitlementGrantsUploadURL creates a URL where you can upload a manifest file granting entitlement to users.
 // manifestID is the unique identifier of the manifest file to be uploaded. Must be 1-64 characters.
 // entitleType is the type of entitlement granted. Only "bulk_drops_grant" is supported.
