@@ -2,6 +2,8 @@ package gwat
 
 // TODO: use net/url library
 import (
+	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -36,4 +38,15 @@ func addParameters(uri *string, paramName string, values []string) {
 		*uri += val
 		*uri += "&" + paramName + "="
 	}
+}
+
+// isValid checks if a parameter has a valid value
+func isValid(paramName, param string, shouldBe []string) error {
+	for _, val := range shouldBe {
+		if param == val {
+			return nil
+		}
+	}
+	s := fmt.Sprintf("Invalid \"%s\" parameter. Valid values are: %v.", paramName, shouldBe)
+	return errors.New(s)
 }
