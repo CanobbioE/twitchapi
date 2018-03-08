@@ -11,4 +11,5 @@ const (
 	UploadEP       = "/upload"
 	UsersEP        = "/users"
 	FollowsEP      = "/follows"
+	VideosEP       = "/videos"
 )

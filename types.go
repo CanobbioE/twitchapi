@@ -34,7 +34,7 @@ type UserFollows struct {
 	FollowedAt string `json:"followed_at"`
 }
 
-// FollowQueryParameters represents the optional query string parameters used for API calls to the "follow" endpoint.
+// FollowQueryParameters represents the optional query string's parameters used for API calls to the "follow" endpoint.
 type FollowQueryParameters struct {
 	After  string `after`
 	Before string `before`
@@ -182,4 +182,40 @@ type StreamQueryParameters struct {
 	Type       string   `type`
 	UserID     string   `user_id`
 	UserLogin  string   `user_login`
+}
+
+// ------------- Video -------------
+
+// Video represents a video information as described by the Twitch API documentation.
+type Video struct {
+	ID           string `json:"id"`
+	UserID       string `json:"user_id"`
+	Title        string `json:"title"`
+	Description  string `json:"description"`
+	CreatedAt    string `json:"created_at"`
+	PublishedAt  string `json:"published_at"`
+	ThumbnailURL string `json:"thumbnail_url"`
+	ViewCount    int    `json:"view_count"`
+	Language     string `json:"language"`
+	Duration     string `json:"duration"`
+}
+
+// videoData represents an array of Video
+type videoData struct {
+	Data       []Video `json:"data"`
+	Pagination Cursor  `json:"pagination"`
+}
+
+// VideoQueryParameters represents the query string's parameters used for API calls to the "video" endpoint.
+type VideoQueryParameters struct {
+	ID       string `id`      // required
+	UserID   string `user_id` // required
+	GameID   string `game_id` // required
+	After    string `after`
+	Before   string `before`
+	First    string `first`
+	Language string `language`
+	Period   string `period`
+	Sort     string `sort`
+	Type     string `type`
 }
