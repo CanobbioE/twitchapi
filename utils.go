@@ -14,7 +14,7 @@ func parseInput(input interface{}) map[string]interface{} {
 
 	for i := 0; i < s.NumField(); i++ {
 		curr := s.Field(i).Interface()
-		tag := getFieldTag(reflect.TypeOf(input).Elem().FieldByIndex([]int{i}))
+		tag := fieldTag(reflect.TypeOf(input).FieldByIndex([]int{i}))
 		if !isNil(curr) {
 			params[tag] = curr
 		}
@@ -23,12 +23,15 @@ func parseInput(input interface{}) map[string]interface{} {
 }
 
 // getFieldTag gets the tag of the given field (f)
-func getFieldTag(f reflect.StructField) string {
+func fieldTag(f reflect.StructField) string {
 	return string(f.Tag)
 }
 
 // isNil returns true if the given value (val) is equal to the zero of its type
 func isNil(val interface{}) bool {
+	if val == nil {
+		return true
+	}
 	return val == reflect.Zero(reflect.TypeOf(val)).Interface()
 }
 
