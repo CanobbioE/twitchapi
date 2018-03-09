@@ -21,7 +21,6 @@ To this day this is the most updated and complete go wrapper for the new Twitch 
 - [GetVideos](https://dev.twitch.tv/docs/api/reference#get-videos)
 
 ## TODO
-- Comment exported struct's fields
 - Change request to something more significant
 - Change Client to TwitchClient
 - Try refactoring requests
