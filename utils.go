@@ -1,6 +1,5 @@
 package gwat
 
-// TODO: use net/url library
 import (
 	"errors"
 	"fmt"
@@ -38,8 +37,7 @@ func isNil(val interface{}) bool {
 // addParameters adds to uri multiple parameters with the same name
 func addParameters(uri *string, paramName string, values []string) {
 	for _, val := range values {
-		*uri += val
-		*uri += "&" + paramName + "="
+		*uri += paramName + "=" + val + "&"
 	}
 }
 
