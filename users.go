@@ -28,12 +28,15 @@ func (c *Client) GetUsers(ids, logins []string, authTkn string) ([]User, error) 
 		uri += "login="
 		addParameters(&uri, "login", logins)
 	}
-	h := Header{
-		Field: "Authorization",
-		Value: "Bearer " + authTkn,
+	h := Header{}
+	if isNil(authTkn) {
+		h.Field = "Authorization"
+		h.Value = "Bearer " + authTkn
+	} else {
+		return nil, errors.New("GetUsers: An authorization token is needed")
 	}
 
-	res, err := c.request("GET", uri, h)
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +69,7 @@ func (c *Client) GetUserFollows(fq FollowQueryParameters) ([]UserFollows, error)
 		Value: c.ClientID,
 	}
 
-	res, err := c.request("GET", uri, h)
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +93,7 @@ func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 		Value: "Bearer " + authTkn,
 	}
 
-	res, err := c.request("PUT", uri, h)
+	res, err := c.apiCall("PUT", uri, h)
 	if err != nil {
 		return nil, err
 	}

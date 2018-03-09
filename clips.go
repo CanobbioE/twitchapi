@@ -21,10 +21,10 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
-		return nil, errors.New("An authorization token is needed")
+		return nil, errors.New("CreateClip: An authorization token is needed")
 	}
 
-	res, err := c.request("POST", uri, h)
+	res, err := c.apiCall("POST", uri, h)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *Client) GetClip(id string) ([]Clip, error) {
 		Value: c.ClientID,
 	}
 
-	res, err := c.request("GET", uri, h)
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}

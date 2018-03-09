@@ -5,6 +5,7 @@ package gwat
 func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) {
 	uri := BaseURL + StreamEP
 	retCursor := Cursor{}
+	retStreams := streams{}
 
 	res, err := c.streamRequest(&uri, qp)
 	if err != nil {
@@ -12,7 +13,6 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 	}
 	defer res.Body.Close()
 
-	retStreams := streams{}
 	if err := parseResult(res, &retStreams); err != nil {
 		return nil, retCursor, err
 	}
@@ -25,6 +25,7 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata, Cursor, error) {
 	uri := BaseURL + StreamEP + MetaDataEP
 	retCursor := Cursor{}
+	retMetaStreams := metaData{}
 
 	res, err := c.streamRequest(&uri, qp)
 	if err != nil {
@@ -32,7 +33,6 @@ func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata,
 	}
 	defer res.Body.Close()
 
-	retMetaStreams := metas{}
 	if err := parseResult(res, &retMetaStreams); err != nil {
 		return nil, retCursor, err
 	}

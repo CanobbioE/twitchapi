@@ -17,12 +17,15 @@ func (c *Client) CreateEntitlementGrantsUploadURL(manifestID, entitleType, authT
 		return "", errors.New("Only \"bulk_drop_grant\" supported as entitle type")
 	}
 
-	h := Header{
-		Field: "Authorization:",
-		Value: "Bearer " + authTkn,
+	h := Header{}
+	if !isNil(authTkn) {
+		h.Field = "Authorization"
+		h.Value = "Bearer " + authTkn
+	} else {
+		return "", errors.New("CreateEntitlementGrantsUploadURL: An authorization token is needed")
 	}
 
-	res, err := c.request("POST", uri, h)
+	res, err := c.apiCall("POST", uri, h)
 	if err != nil {
 		return "", err
 	}

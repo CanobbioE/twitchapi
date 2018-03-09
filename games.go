@@ -11,7 +11,6 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 	uri := BaseURL + GamesEP
 	retGames := games{}
 
-	// checking input
 	if ids == nil && names == nil {
 		return nil, errors.New("At least one id or name must be specified")
 	}
@@ -19,7 +18,6 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 		return nil, errors.New("A maximum of 10 ids or names can be specified")
 	}
 
-	// creating uri and header
 	if ids != nil {
 		uri += "?id="
 		addParameters(&uri, "id", ids)
@@ -33,8 +31,7 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 		Value: c.ClientID,
 	}
 
-	// performing request
-	res, err := c.request("GET", uri, h)
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +64,7 @@ func (c *Client) GetTopGames(after, before string, first int) ([]Game, error) {
 		Value: c.ClientID,
 	}
 
-	res, err := c.request("GET", uri, h)
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}

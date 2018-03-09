@@ -52,8 +52,8 @@ func (c *Client) GetVideos(vq VideoQueryParameters) ([]Video, Cursor, error) {
 		}
 	}
 
-	// perform request
-	res, err := c.request("GET", uri, h)
+	// perform apiCall
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, retCursor, err
 	}

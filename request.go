@@ -14,8 +14,8 @@ type Header struct {
 	Value string // field value
 }
 
-// Request performs a http request and returns the response.
-func (c *Client) request(method, uri string, h Header) (*http.Response, error) {
+// apiCall performs a http request and returns the response.
+func (c *Client) apiCall(method, uri string, h Header) (*http.Response, error) {
 	client := c.HttpClient
 
 	req, err := http.NewRequest(method, uri, nil)
@@ -66,6 +66,6 @@ func (c *Client) streamRequest(uri *string, qp StreamQueryParameters) (*http.Res
 		Value: c.ClientID,
 	}
 
-	res, err := c.request("GET", *uri, h)
+	res, err := c.apiCall("GET", *uri, h)
 	return res, err
 }
