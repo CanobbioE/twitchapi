@@ -1,4 +1,4 @@
-package gwat
+package twitchapi
 
 import "errors"
 

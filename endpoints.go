@@ -1,4 +1,4 @@
-package gwat
+package twitchapi
 
 const (
 	BaseURL        = "https://api.twitch.tv/helix/"

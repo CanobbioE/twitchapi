@@ -1,4 +1,4 @@
-package gwat
+package twitchapi
 
 // GetStream gets information about active streams using options specified in a QueryParameters struct.
 // Streams are returned sorted by number of current viewers, in descending order.

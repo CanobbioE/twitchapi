@@ -1,4 +1,4 @@
-package gwat
+package twitchapi
 
 /*
 	This file contains all the input used for the different API calls
