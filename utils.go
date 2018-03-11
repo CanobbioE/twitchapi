@@ -31,6 +31,17 @@ func isNil(val interface{}) bool {
 	if val == nil {
 		return true
 	}
+	// Slice supports
+	switch t := val.(type) {
+	case []int:
+		return len(t) == 0
+	case []bool:
+		return len(t) == 0
+	case []string:
+		return len(t) == 0
+	case []float64:
+		return len(t) == 0
+	}
 	return val == reflect.Zero(reflect.TypeOf(val)).Interface()
 }
 
