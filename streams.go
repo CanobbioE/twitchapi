@@ -5,7 +5,7 @@ package twitchapi
 func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) {
 	uri := BaseURL + StreamEP
 	retCursor := Cursor{}
-	retStreams := streams{}
+	retStreams := streamData{}
 
 	res, err := c.streamRequest(&uri, qp)
 	if err != nil {

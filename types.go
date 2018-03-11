@@ -90,7 +90,7 @@ type Game struct {
 }
 
 // games represents an array of Game
-type games struct {
+type gameData struct {
 	Data []Game `json:data`
 }
 
@@ -152,7 +152,7 @@ type Stream struct {
 }
 
 // streams represents an array of Stream.
-type streams struct {
+type streamData struct {
 	Data       []Stream `json:"data"`
 	Pagination Cursor   `json:"pagination"`
 }

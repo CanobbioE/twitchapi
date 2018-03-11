@@ -9,7 +9,7 @@ import (
 // At least one between ids and names must be specified.
 func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 	uri := BaseURL + GamesEP
-	retGames := games{}
+	retGames := gameData{}
 
 	if ids == nil && names == nil {
 		return nil, errors.New("At least one id or name must be specified")
@@ -46,7 +46,7 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 // GetTopGames gets games sorted by number of current viewers.
 func (c *Client) GetTopGames(after, before string, first int) ([]Game, error) {
 	uri := BaseURL + GamesEP + TopGamesEP
-	retGames := games{}
+	retGames := gameData{}
 
 	uri += "?"
 	if !isNil(after) {
