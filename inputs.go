@@ -39,3 +39,24 @@ type VideoQueryParameters struct {
 	Sort     string `sort`
 	Type     string `type`
 }
+
+type EntitlementURLQueryParameters struct {
+	ManifestID string `manifest_id`
+	Type       string `type`
+}
+
+type GameQueryParameters struct {
+	IDs   []string `id`
+	Names []string `name`
+}
+
+type TopGameQueryParameters struct {
+	after  string `after`
+	before string `before`
+	first  int    `first`
+}
+
+type UserQueryParameters struct {
+	IDs    []string `id`
+	Logins []string `login`
+}

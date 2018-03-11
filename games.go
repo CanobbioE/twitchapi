@@ -2,30 +2,31 @@ package twitchapi
 
 import (
 	"errors"
-	"strconv"
+	"fmt"
 )
 
 // GetGames gets information about one or more games specified by id and/or name.
 // At least one between ids and names must be specified.
-func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
+func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 	uri := BaseURL + GamesEP
 	retGames := gameData{}
 
-	if ids == nil && names == nil {
+	params := parseInput(qp)
+
+	ids, idIsOk := params["id"]
+	names, nameIsOk := params["name"]
+
+	if !idIsOk && !nameIsOk {
 		return nil, errors.New("At least one id or name must be specified")
 	}
-	if len(ids) > 10 || len(names) > 10 {
+
+	if len(ids.([]string)) > 10 || len(names.([]string)) > 10 {
 		return nil, errors.New("A maximum of 10 ids or names can be specified")
 	}
 
-	if ids != nil {
-		uri += "?id="
-		addParameters(&uri, "id", ids)
-	}
-	if names != nil {
-		uri += "?name="
-		addParameters(&uri, "name", names)
-	}
+	uri += "?"
+	addParameters(&uri, "id", ids.([]string))
+	addParameters(&uri, "name", names.([]string))
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
@@ -36,6 +37,10 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return nil, errors.New("GetGames returned status" + res.Status)
+	}
 
 	if err := parseResult(res, &retGames); err != nil {
 		return nil, err
@@ -44,19 +49,15 @@ func (c *Client) GetGames(ids []string, names []string) ([]Game, error) {
 }
 
 // GetTopGames gets games sorted by number of current viewers.
-func (c *Client) GetTopGames(after, before string, first int) ([]Game, error) {
+func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 	uri := BaseURL + GamesEP + TopGamesEP
 	retGames := gameData{}
 
+	params := parseInput(qp)
+
 	uri += "?"
-	if !isNil(after) {
-		uri += "after=" + after + "&"
-	}
-	if !isNil(before) {
-		uri += "before=" + before + "&"
-	}
-	if !isNil(first) {
-		uri += "first=" + strconv.Itoa(first) + "&"
+	for k, v := range params {
+		uri += fmt.Sprintf("%s=%v&", k, v)
 	}
 
 	h := Header{
@@ -69,6 +70,10 @@ func (c *Client) GetTopGames(after, before string, first int) ([]Game, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return nil, errors.New("GetTopGames returned status" + res.Status)
+	}
 
 	if err := parseResult(res, &retGames); err != nil {
 		return nil, err

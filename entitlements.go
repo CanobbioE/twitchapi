@@ -3,17 +3,18 @@ package twitchapi
 import "errors"
 
 // CreateEntitlementGrantsUploadURL creates a URL where you can upload a manifest file granting entitlement to users.
-// manifestID is the unique identifier of the manifest file to be uploaded. Must be 1-64 characters.
-// entitleType is the type of entitlement granted. Only "bulk_drops_grant" is supported.
-func (c *Client) CreateEntitlementGrantsUploadURL(manifestID, entitleType, authTkn string) (string, error) {
+// It requires an application access token (authTkn)
+func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParameters, authTkn string) (string, error) {
 	uri := BaseURL + EntitlementsEP + UploadEP
 
-	ml := len(manifestID)
+	params := parseInput(qp)
+	ml := len(params["manifest_id"].([]string))
 	if ml > 64 || ml < 1 {
 		return "", errors.New("Manifest ID's length must be between 1 and 64")
 	}
 
-	if entitleType != "bulk_drop_grant" {
+	err := isValid("type", params["type"].(string), []string{"bulk_drop_grant"})
+	if err != nil {
 		return "", errors.New("Only \"bulk_drop_grant\" supported as entitle type")
 	}
 
@@ -29,8 +30,11 @@ func (c *Client) CreateEntitlementGrantsUploadURL(manifestID, entitleType, authT
 	if err != nil {
 		return "", err
 	}
-
 	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return "", errors.New("CreateEntitlementGrantsUploadURL returned status:" + res.Status)
+	}
 
 	retUploadURL := uploadData{}
 	if err := parseResult(res, &retUploadURL); err != nil {

@@ -13,7 +13,7 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	if !isNil(broadcasterID) {
 		uri += "?broadcaster_id=" + broadcasterID
 	} else {
-		return nil, errors.New("broadcasterID must be specified")
+		return nil, errors.New("CreateClip: broadcasterID must be specified")
 	}
 
 	h := Header{}
@@ -28,8 +28,11 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return nil, errors.New("CreateClip returned status:" + res.Status)
+	}
 
 	retClipInfo := clipInfoData{}
 	if err := parseResult(res, &retClipInfo); err != nil {
@@ -55,8 +58,11 @@ func (c *Client) GetClip(id string) ([]Clip, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return nil, errors.New("CreateClip returned status:" + res.Status)
+	}
 
 	retClip := clipData{}
 	if err := parseResult(res, &retClip); err != nil {

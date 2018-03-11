@@ -6,30 +6,28 @@ import (
 )
 
 // GetUsers gets information about one or more specified Twitch users, identified by id or login.
-// If neither ids nor logins are specified the user is looked up by the authentication token.
 // The authentication token must have scope 'user:read:mail'
-func (c *Client) GetUsers(ids, logins []string, authTkn string) ([]User, error) {
+func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error) {
 	uri := BaseURL + UsersEP
 	retUsers := userData{}
 
-	if len(ids) > 100 {
-		return nil, errors.New("A maximum of 100 ids can be specified")
+	params := parseInput(qp)
+
+	ids := params["id"]
+	logins := params["login"]
+
+	if len(ids.([]string)) > 100 {
+		return nil, errors.New("GetUsers: A maximum of 100 ids can be specified")
 	}
-	if len(logins) > 100 {
-		return nil, errors.New("A maximum of 100 logins can be specified")
+	if len(logins.([]string)) > 100 {
+		return nil, errors.New("GetUsers: A maximum of 100 logins can be specified")
 	}
 
 	uri += "?"
-	if ids != nil {
-		uri += "id="
-		addParameters(&uri, "id", ids)
-	}
-	if logins != nil {
-		uri += "login="
-		addParameters(&uri, "login", logins)
-	}
+	addParameters(&uri, "id", ids.([]string))
+	addParameters(&uri, "login", logins.([]string))
 	h := Header{}
-	if isNil(authTkn) {
+	if !isNil(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
@@ -42,21 +40,26 @@ func (c *Client) GetUsers(ids, logins []string, authTkn string) ([]User, error) 
 	}
 	defer res.Body.Close()
 
+	if res.Status != "200 OK" {
+		return nil, errors.New("GetUsers returned status" + res.Status)
+	}
+
 	if err := parseResult(res, &retUsers); err != nil {
 		return nil, err
 	}
+
 	return retUsers.Data, nil
 }
 
 // GetUsersFollows gets information on follow relationships between two Twitch users.
-func (c *Client) GetUserFollows(fq FollowQueryParameters) ([]UserFollows, error) {
+func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, error) {
 	uri := BaseURL + UsersEP + FollowsEP
 	retUsersFollows := userFollowData{}
 
-	params := parseInput(fq)
+	params := parseInput(qp)
 	uri += "?"
 	if params["first"].(int) > 100 {
-		return nil, errors.New("\"First\" parameter cannot be greater than 100")
+		return nil, errors.New("GetUsersFollows: \"First\" parameter cannot be greater than 100")
 	}
 
 	uri += "?"
@@ -75,6 +78,10 @@ func (c *Client) GetUserFollows(fq FollowQueryParameters) ([]UserFollows, error)
 	}
 	defer res.Body.Close()
 
+	if res.Status != "200 OK" {
+		return nil, errors.New("GetUsersFollows returned status" + res.Status)
+	}
+
 	if err := parseResult(res, &retUsersFollows); err != nil {
 		return nil, err
 	}
@@ -88,9 +95,10 @@ func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 	retUsers := userData{}
 
 	uri += "?description=" + description
-	h := Header{
-		Field: "Authorization",
-		Value: "Bearer " + authTkn,
+	h := Header{}
+	if !isNil(authTkn) {
+		h.Field = "Authorization"
+		h.Value = "Bearer " + authTkn
 	}
 
 	res, err := c.apiCall("PUT", uri, h)
@@ -98,6 +106,10 @@ func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return nil, errors.New("UpdateUser returned status" + res.Status)
+	}
 
 	if err := parseResult(res, &retUsers); err != nil {
 		return nil, err
