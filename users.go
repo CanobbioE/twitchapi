@@ -47,11 +47,19 @@ func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error
 }
 
 // GetUsersFollows gets information on follow relationships between two Twitch users.
-func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, error) {
+// It also returns the number of items returned.
+//
+// * If only from_id was in the request, returns the total number of followed users.
+//
+// * If only to_id was in the request, returns the total number of followers.
+//
+// * If both from_id and to_id were in the request, returns 1 (if the "from" user follows the "to" user) or 0.
+func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, int, error) {
 	retUsersFollows := userFollowData{}
+	var retTotal int
 
 	if qp.First > 100 {
-		return nil, errors.New("GetUsersFollows: \"First\" parameter cannot be greater than 100")
+		return nil, retTotal, errors.New("GetUsersFollows: \"First\" parameter cannot be greater than 100")
 	}
 
 	uri := makeUri(UsersEP+FollowsEP, qp)
@@ -62,18 +70,19 @@ func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, error)
 
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
-		return nil, err
+		return nil, retTotal, err
 	}
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("GetUsersFollows returned status" + res.Status)
+		return nil, retTotal, errors.New("GetUsersFollows returned status" + res.Status)
 	}
 
 	if err := parseResult(res, &retUsersFollows); err != nil {
-		return nil, err
+		return nil, retTotal, err
 	}
-	return retUsersFollows.Data, nil
+	retTotal = retUsersFollows.Total
+	return retUsersFollows.Data, retTotal, nil
 }
 
 // UpdateUser updates the description of a user specified by the authentication token (authTkn).

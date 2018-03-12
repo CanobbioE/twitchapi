@@ -31,7 +31,7 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 	return retStreams.Data, retCursor, nil
 }
 
-//GetStreamsMetadata gets metadata information about active streams playing Overwatch or Heartstone.
+// GetStreamsMetadata gets metadata information about active streams playing Overwatch or Heartstone.
 // Streams are sorted by number of current viewers, in descending order
 func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata, Cursor, error) {
 	retCursor := Cursor{}
