@@ -11,6 +11,12 @@ Although most functions checks for input correctness, I highly recomend to check
 ## Why twitchapi?
 To this day this is the most updated and complete go wrapper for the new Twitch API.
 
+## Installation
+Using go get:
+```
+go get github.com/canobbioe/twitchapi
+```
+
 ## Functions supported
 - [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) 
 - [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
@@ -28,7 +34,7 @@ To this day this is the most updated and complete go wrapper for the new Twitch 
 Authentication is not yet implemented within this pkg.  
 Authentication involves:  
 - [Registering](https://dev.twitch.tv/dashboard/apps/create) your client.
-- [Gettin a token](https://dev.twitch.tv/docs/authentication#getting-tokens).
+- [Getting a token](https://dev.twitch.tv/docs/authentication#getting-tokens).
 - [Sending a token](https://dev.twitch.tv/docs/authentication#sending-user-access-and-app-access-tokens).
 
 ## Usage
