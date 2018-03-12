@@ -1,5 +1,9 @@
 package twitchapi
 
+/*
+	This files contains the endpoints used for API calls
+*/
+
 const (
 	BaseURL        = "https://api.twitch.tv/helix/"
 	ClipsEP        = "/clips"
