@@ -1,4 +1,6 @@
-<!--- build:travisyml doc:go -->
+[![GoDoc](https://godoc.org/github.com/CanobbioE/twitchapi?status.png)](https://godoc.org/github.com/CanobbioE/twitchapi)
+[![Build Status]()]()
+[![twitchapi](https://gocover.io/_badge/github.com/CanobbioE/twitchapi)](http://gocover.io/github.com/CanobbioE/twitchapi)
 # TwitchAPI
 This project is a go wrapper for the [New Twitch API](https://dev.twitch.tv/docs/api).  
 twitchapi provides a set of functuins to perform calls to the new Twitch API.  
@@ -7,18 +9,60 @@ Although most functions checks for input correctness, I highly recomend to check
 ## Why twitchapi?
 To this day this is the most updated and complete go wrapper for the new Twitch API.
 
+## Usage
+Import the package:
+```go
+import "github.com/CanobbioE/twitchapi"
+```
+
+[Register](https://dev.twitch.tv/docs/authentication#registration) a client.
+
+Create a new client:
+```go
+c := twitchapi.NewClient("client-id")
+```
+
+Create an input struct as needed:
+```go
+qp := GameQueryParameters{
+	ID: "493057"
+}
+```
+
+Perform the API call:
+```go
+games, err := c.GetGames()
+if err != nil {
+	// do something with error
+}
+```
+
+Access the values:
+```go
+for _, game := range games {
+	fmt.Println(game.Name)
+}
+```
+Output:
+```
+PLAYER'S UNKOWN BATTLEGROUND
+PLAYER'S UNKOWN BATTLEGROUND
+...
+```
+
+
 ## Functions supported
-- [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) - ([code](https://github.com/CanobbioE/twitchapi/blob/08bfab66e2f2ca4136dea52b597b47573c6a0218/clips.go#L10))
-- [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/entitlements.go#L8))
-- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip) - ([code](https://github.com/CanobbioE/twitchapi/blob/08bfab66e2f2ca4136dea52b597b47573c6a0218/clips.go#L42))
-- [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/games.go#L10))
-- [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/streams.go#L5))
-- [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/streams.go#L25))
-- [GetTopGames](https://dev.twitch.tv/docs/api/reference#get-top-games) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/streams.go#L25))
-- [GetUsers](https://dev.twitch.tv/docs/api/reference#get-users) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/users.go#L11))
-- [GetUsersFollows](https://dev.twitch.tv/docs/api/reference#get-users-follows) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/users.go#L52))
-- [UpdateUser](https://dev.twitch.tv/docs/api/reference#update-user) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/users.go#L86))
-- [GetVideos](https://dev.twitch.tv/docs/api/reference#get-videos) - ([code](https://github.com/CanobbioE/twitchapi/blob/d419966d62121a7cd8836d0dafbaaba1fe6fe513/videos.go#L10))
+- [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) 
+- [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
+- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip)
+- [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip)
+- [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams)
+- [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata)
+- [GetTopGames](https://dev.twitch.tv/docs/api/reference#get-top-games)
+- [GetUsers](https://dev.twitch.tv/docs/api/reference#get-users)
+- [GetUsersFollows](https://dev.twitch.tv/docs/api/reference#get-users-follows)
+- [UpdateUser](https://dev.twitch.tv/docs/api/reference#update-user)
+- [GetVideos](https://dev.twitch.tv/docs/api/reference#get-videos)
 
 ## TODO
 - Try refactoring requests
@@ -26,3 +70,5 @@ To this day this is the most updated and complete go wrapper for the new Twitch 
 - Tests
 - Readme
 - Use net/url
+- Authentication
+- Complete testing
