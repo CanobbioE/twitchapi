@@ -1,13 +1,24 @@
 package twitchapi
 
+import "errors"
+
 // GetStream gets information about active streams using options specified in a QueryParameters struct.
 // Streams are returned sorted by number of current viewers, in descending order.
 func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) {
-	uri := BaseURL + StreamEP
 	retCursor := Cursor{}
 	retStreams := streamData{}
 
-	res, err := c.streamRequest(&uri, qp)
+	if qp.First > 100 {
+		return nil, retCursor, errors.New("\"First\" parameter cannot be greater than 100")
+	}
+
+	uri := makeUri(StreamEP, qp)
+	h := Header{
+		Field: "Client-ID",
+		Value: c.ClientID,
+	}
+
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, retCursor, err
 	}
@@ -23,11 +34,19 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 //GetStreamsMetadata gets metadata information about active streams playing Overwatch or Heartstone.
 // Streams are sorted by number of current viewers, in descending order
 func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata, Cursor, error) {
-	uri := BaseURL + StreamEP + MetaDataEP
 	retCursor := Cursor{}
 	retMetaStreams := metaData{}
+	if qp.First > 100 {
+		return nil, retCursor, errors.New("\"First\" parameter cannot be greater than 100")
+	}
 
-	res, err := c.streamRequest(&uri, qp)
+	uri := makeUri(StreamEP, qp)
+	h := Header{
+		Field: "Client-ID",
+		Value: c.ClientID,
+	}
+
+	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, retCursor, err
 	}

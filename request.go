@@ -2,8 +2,6 @@ package twitchapi
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -41,31 +39,4 @@ func parseResult(src *http.Response, dst interface{}) error {
 	}
 	json.Unmarshal(body, dst)
 	return nil
-}
-
-// streamRequest prepares a stream request whether it's for metadata or not
-func (c *Client) streamRequest(uri *string, qp StreamQueryParameters) (*http.Response, error) {
-	params := parseInput(qp)
-
-	if params["first"].(int) > 100 {
-		err := errors.New("\"First\" parameter cannot be greater than 100")
-		return &http.Response{}, err
-	}
-
-	*uri += "?"
-	for k, v := range params {
-		if k == "comunity_id" {
-			addParameters(uri, "comunity_id", v.([]string))
-		} else {
-			*uri += fmt.Sprintf("%s=%v&", k, v)
-		}
-	}
-
-	h := Header{
-		Field: "Client-ID",
-		Value: c.ClientID,
-	}
-
-	res, err := c.apiCall("GET", *uri, h)
-	return res, err
 }

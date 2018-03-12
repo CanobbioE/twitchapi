@@ -3,7 +3,9 @@ package twitchapi
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"reflect"
+	"strconv"
 )
 
 // parseInput transform an input struct into a map
@@ -45,13 +47,6 @@ func isNil(val interface{}) bool {
 	return val == reflect.Zero(reflect.TypeOf(val)).Interface()
 }
 
-// addParameters adds to uri multiple parameters with the same name
-func addParameters(uri *string, paramName string, values []string) {
-	for _, val := range values {
-		*uri += paramName + "=" + val + "&"
-	}
-}
-
 // isValid checks if a parameter has a valid value
 func isValid(paramName, param string, shouldBe []string) error {
 	for _, val := range shouldBe {
@@ -61,4 +56,38 @@ func isValid(paramName, param string, shouldBe []string) error {
 	}
 	s := fmt.Sprintf("Invalid \"%s\" parameter. Valid values are: %v.", paramName, shouldBe)
 	return errors.New(s)
+}
+
+// makeUri creates a uri and returns it as string
+func makeUri(ep string, qp interface{}) string {
+
+	uri := &url.URL{}
+
+	uri, err := url.Parse(BaseURL + ep)
+	if err != nil {
+		panic(err)
+	}
+
+	params := parseInput(qp)
+	values := url.Values{}
+	for k, v := range params {
+		switch t := v.(type) {
+		case []string:
+			for i := range t {
+				values.Add(k, t[i])
+			}
+		case []int:
+			for i := range t {
+				values.Add(k, strconv.Itoa(t[i]))
+			}
+		case int:
+			values.Add(k, strconv.Itoa(t))
+		case string:
+			values.Add(k, t)
+		}
+	}
+
+	uri.RawQuery = values.Encode()
+
+	return uri.String()
 }

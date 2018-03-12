@@ -8,6 +8,7 @@ import (
 // CreateClip requires an authentication token (authTkn) with scope 'clips:edit
 // and the id of the stream from which the clip will be made (broadcasterID).
 func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
+	retClipInfo := clipInfoData{}
 	uri := BaseURL + ClipsEP
 
 	if !isNil(broadcasterID) {
@@ -34,7 +35,6 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 		return nil, errors.New("CreateClip returned status:" + res.Status)
 	}
 
-	retClipInfo := clipInfoData{}
 	if err := parseResult(res, &retClipInfo); err != nil {
 		return nil, err
 	}

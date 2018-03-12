@@ -1,58 +1,51 @@
 package twitchapi
 
 import (
+	"errors"
 	"fmt"
+	"net/url"
 )
 
 // GetVideos gets video information by video ID (one or more), user ID (one only), or game ID (one only).
 // If id is specified any other parameter is ignored.
 // For lookup by user or game ID a Cursor is returned.
-func (c *Client) GetVideos(vq VideoQueryParameters) ([]Video, Cursor, error) {
-	uri := BaseURL + VideosEP
+func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 	retVideos := videoData{}
 	retCursor := Cursor{}
+	var uri string
+
+	if !isNil(qp.ID) {
+		var err error
+		err = isValid("period", qp.Period, []string{"all", "day", "month", "week"})
+		if err != nil {
+			return nil, retCursor, err
+		}
+		err = isValid("sort", qp.Sort, []string{"time", "trending", "views"})
+		if err != nil {
+			return nil, retCursor, err
+		}
+		err = isValid("type", qp.Type, []string{"all", "upload", "archive", "highlight"})
+		if err != nil {
+			return nil, retCursor, err
+		}
+		if qp.First > 100 {
+			return nil, retCursor, errors.New("GetVideos: \"First\" parameter cannot be greater than 100")
+		}
+		uri = makeUri(VideosEP, qp)
+	} else {
+		fmt.Println("GetVideos: \"id\" was specified. Ignoring all the other parameters")
+		var u url.URL
+		v := url.Values{}
+		v.Add("id", qp.ID)
+		u.RawQuery = v.Encode()
+		uri = u.String()
+	}
 
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
 
-	// check params
-	params := parseInput(vq)
-	uri += "?"
-	if id, ok := params["id"]; !ok {
-		for k, v := range params {
-			if k == "period" {
-				err := isValid(k, v.(string), []string{"all", "day", "month", "week"})
-				if err != nil {
-					return nil, retCursor, err
-				}
-			}
-			if k == "sort" {
-				err := isValid(k, v.(string), []string{"time", "trending", "views"})
-				if err != nil {
-					return nil, retCursor, err
-				}
-			}
-			if k == "type" {
-				err := isValid(k, v.(string), []string{"all", "upload", "archive", "highlight"})
-				if err != nil {
-					return nil, retCursor, err
-				}
-			}
-			// if k == "first" && strconv.Atoi(v) > 100 { return nil, errors.New()}
-			uri += fmt.Sprintf("%s=%v&", k, v)
-		}
-	} else {
-		fmt.Println("GetVideos: \"id\" was specified. Ignoring all the other parameters")
-		if t, ok := id.([]string); ok {
-			addParameters(&uri, "id", t)
-		} else {
-			uri += "id=" + id.(string)
-		}
-	}
-
-	// perform apiCall
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, retCursor, err
