@@ -25,29 +25,38 @@ c := twitchapi.NewClient("client-id")
 
 Create an input struct as needed:
 ```go
-qp := GameQueryParameters{
-	ID: "493057"
+qp := StreamQueryParameters{
+	First: 20,
+	Language: []string{"en"},
 }
 ```
 
 Perform the API call:
 ```go
-games, err := c.GetGames()
+streams, cursor, err := c.GetStreams(qp)
 if err != nil {
-	// do something with error
+	// handle error
 }
 ```
 
 Access the values:
 ```go
-for _, game := range games {
-	fmt.Println(game.Name)
+for _, stream := range streams {
+	fmt.Printf("%s : %d\n", stream.Title, stream.ViewerCount)
 }
 ```
 Output:
 ```
-PLAYER'S UNKOWN BATTLEGROUND
-PLAYER'S UNKOWN BATTLEGROUND
+We gaming | @Ninja on twitter and Instagram : 110299
+
+buff kaisa : 18888
+
+hey there B U D   : 16138
+
+༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽ : 15337
+
+★AMAZ★ No more Rag in Arena nooooo =D | Battlerite later!! : 11316
+
 ...
 ```
 
