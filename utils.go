@@ -3,6 +3,7 @@ package twitchapi
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"reflect"
 	"strconv"
 )
@@ -58,11 +59,11 @@ func isValid(paramName, param string, shouldBe []string) error {
 }
 
 // makeUri creates a uri and returns it as string
-func makeUri(url string, qp interface{}) string {
+func makeUri(ep string, qp interface{}) string {
 
 	uri := &url.URL{}
 
-	uri, err := url.Parse(url)
+	uri, err := url.Parse(ep)
 	if err != nil {
 		panic(err)
 	}
