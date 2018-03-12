@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/CanobbioE/twitchapi.svg?branch=master)](https://travis-ci.org/CanobbioE/twitchapi)
 <!--[![twitchapi](https://gocover.io/_badge/github.com/CanobbioE/twitchapi)](http://gocover.io/github.com/CanobbioE/twitchapi)-->
 # TwitchAPI
+
+## Description
 This project is a go wrapper for the [New Twitch API](https://dev.twitch.tv/docs/api).  
 twitchapi provides a set of functuins to perform calls to the new Twitch API.  
 Although most functions checks for input correctness, I highly recomend to check the [API reference](https://dev.twitch.tv/docs/api/reference).
@@ -10,12 +12,11 @@ Although most functions checks for input correctness, I highly recomend to check
 To this day this is the most updated and complete go wrapper for the new Twitch API.
 
 ## Usage
+First of all make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client, then proceed as shown.  
 Import the package:
 ```go
 import "github.com/CanobbioE/twitchapi"
 ```
-
-[Register](https://dev.twitch.tv/docs/authentication#registration) a client.
 
 Create a new client:
 ```go
@@ -66,9 +67,6 @@ PLAYER'S UNKOWN BATTLEGROUND
 
 ## TODO
 - Try refactoring requests
-- Check exported types
-- Tests
-- Readme
 - Use net/url
 - Authentication
 - Complete testing
