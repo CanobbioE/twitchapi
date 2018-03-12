@@ -1,5 +1,5 @@
 [![GoDoc](https://godoc.org/github.com/CanobbioE/twitchapi?status.png)](https://godoc.org/github.com/CanobbioE/twitchapi)
-[![Build Status]()]()
+[![Build Status](https://travis-ci.org/CanobbioE/twitchapi.svg?branch=master)](https://travis-ci.org/CanobbioE/twitchapi)
 [![twitchapi](https://gocover.io/_badge/github.com/CanobbioE/twitchapi)](http://gocover.io/github.com/CanobbioE/twitchapi)
 # TwitchAPI
 This project is a go wrapper for the [New Twitch API](https://dev.twitch.tv/docs/api).  
