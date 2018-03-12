@@ -129,8 +129,8 @@ type OwHero struct {
 
 // Hearthstone represents the hearthstone metadata information.
 type Hearthstone struct {
-	Broadcaster Hero `json:"broadcaster"` // Hearthstone metadata about the broadcaster's opponent.
-	Opponent    Hero `json:"opponent"`    // Hearthstone metadata about the broadcaster .
+	Broadcaster HsHero `json:"broadcaster"` // Hearthstone metadata about the broadcaster's opponent.
+	Opponent    HsHero `json:"opponent"`    // Hearthstone metadata about the broadcaster .
 }
 
 // HsHero represents the Hearthstone hero metadata information.

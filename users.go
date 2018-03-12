@@ -49,11 +49,11 @@ func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error
 // GetUsersFollows gets information on follow relationships between two Twitch users.
 // It also returns the number of items returned.
 //
-// * If only from_id was in the request, returns the total number of followed users.
+// - If only from_id was in the request, returns the total number of followed users.
 //
-// * If only to_id was in the request, returns the total number of followers.
+// - If only to_id was in the request, returns the total number of followers.
 //
-// * If both from_id and to_id were in the request, returns 1 (if the "from" user follows the "to" user) or 0.
+// - If both from_id and to_id were in the request, returns 1 (if the "from" user follows the "to" user) or 0.
 func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, int, error) {
 	retUsersFollows := userFollowData{}
 	var retTotal int
