@@ -31,7 +31,7 @@ func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 		if qp.First > 100 {
 			return nil, retCursor, errors.New("GetVideos: \"First\" parameter cannot be greater than 100")
 		}
-		uri = makeUri(VideosEP, qp)
+		uri = makeUri(BaseURL+VideosEP, qp)
 	} else {
 		fmt.Println("GetVideos: \"id\" was specified. Ignoring all the other parameters")
 		var u url.URL

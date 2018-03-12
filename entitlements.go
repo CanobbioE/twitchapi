@@ -2,22 +2,22 @@ package twitchapi
 
 import "errors"
 
-// CreateEntitlementGrantsUploadURL creates a URL where you can upload a manifest file granting entitlement to users.
+// CreateEntitlementGrantsUploadURL creates a URL where you can upload a
+// manifest file granting entitlement to users.
 // It requires an application access token (authTkn)
 func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParameters, authTkn string) (string, error) {
-	uri := BaseURL + EntitlementsEP + UploadEP
 
-	params := parseInput(qp)
-	ml := len(params["manifest_id"].([]string))
+	ml := len(qp.ManifestID)
 	if ml > 64 || ml < 1 {
 		return "", errors.New("Manifest ID's length must be between 1 and 64")
 	}
 
-	err := isValid("type", params["type"].(string), []string{"bulk_drop_grant"})
+	err := isValid("type", qp.Type, []string{"bulk_drop_grant"})
 	if err != nil {
 		return "", errors.New("Only \"bulk_drop_grant\" supported as entitle type")
 	}
 
+	uri := makeUri(BaseURL+EntitlementsEP+UploadEP, qp)
 	h := Header{}
 	if !isNil(authTkn) {
 		h.Field = "Authorization"

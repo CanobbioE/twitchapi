@@ -27,7 +27,7 @@ func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error
 	} else {
 		return nil, errors.New("GetUsers: An authorization token is needed")
 	}
-	uri := makeUri(UsersEP, qp)
+	uri := makeUri(BaseURL+UsersEP, qp)
 
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
@@ -62,7 +62,7 @@ func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, int, e
 		return nil, retTotal, errors.New("GetUsersFollows: \"First\" parameter cannot be greater than 100")
 	}
 
-	uri := makeUri(UsersEP+FollowsEP, qp)
+	uri := makeUri(BaseURL+UsersEP+FollowsEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,

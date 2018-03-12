@@ -12,7 +12,7 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 		return nil, retCursor, errors.New("\"First\" parameter cannot be greater than 100")
 	}
 
-	uri := makeUri(StreamEP, qp)
+	uri := makeUri(BaseURL+StreamEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
@@ -40,7 +40,7 @@ func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata,
 		return nil, retCursor, errors.New("\"First\" parameter cannot be greater than 100")
 	}
 
-	uri := makeUri(StreamEP, qp)
+	uri := makeUri(BaseURL+StreamEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,

@@ -23,7 +23,7 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 		return nil, errors.New("GetGames: A maximum of 100 names can be specified")
 	}
 
-	uri := makeUri(GamesEP, qp)
+	uri := makeUri(BaseURL+GamesEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
@@ -53,7 +53,7 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
-	uri := makeUri(GamesEP+TopGamesEP, qp)
+	uri := makeUri(BaseURL+GamesEP+TopGamesEP, qp)
 
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
