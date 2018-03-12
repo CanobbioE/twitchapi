@@ -8,7 +8,7 @@ type Client struct {
 	HttpClient *http.Client
 }
 
-// NewClient returns a newly created TwitchClient with the specified clientID
+// NewClient returns a newly created TwitchClient with the specified clientID.
 func NewClient(clientID string) *Client {
 	return &Client{
 		ClientID:   clientID,
