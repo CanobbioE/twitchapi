@@ -11,36 +11,48 @@ Although most functions checks for input correctness, I highly recomend to check
 ## Why twitchapi?
 To this day this is the most updated and complete go wrapper for the new Twitch API.
 
+## Functions supported
+- [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) 
+- [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
+- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip)
+- [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip)
+- [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams)
+- [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata)
+- [GetTopGames](https://dev.twitch.tv/docs/api/reference#get-top-games)
+- [GetUsers](https://dev.twitch.tv/docs/api/reference#get-users)
+- [GetUsersFollows](https://dev.twitch.tv/docs/api/reference#get-users-follows)
+- [UpdateUser](https://dev.twitch.tv/docs/api/reference#update-user)
+- [GetVideos](https://dev.twitch.tv/docs/api/reference#get-videos)
+
+## Authentication
+Authentication is not yet implemented within this pkg.  
+Authentication involves:  
+- [Registering](https://dev.twitch.tv/dashboard/apps/create) your client.
+- [Gettin a token](https://dev.twitch.tv/docs/authentication#getting-tokens).
+- [Sending a token](https://dev.twitch.tv/docs/authentication#sending-user-access-and-app-access-tokens).
+
 ## Usage
 First of all make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client, then proceed as shown.  
-Import the package:
 ```go
+// Import the package
 import "github.com/CanobbioE/twitchapi"
-```
 
-Create a new client:
-```go
+// Create a new client
 c := twitchapi.NewClient("client-id")
-```
 
-Create an input struct as needed:
-```go
+// Create an input struct as needed
 qp := StreamQueryParameters{
 	First: 20,
 	Language: []string{"en"},
 }
-```
 
-Perform the API call:
-```go
+// Perform the API call
 streams, cursor, err := c.GetStreams(qp)
 if err != nil {
 	// handle error
 }
-```
 
-Access the values:
-```go
+// Access the values
 for _, stream := range streams {
 	fmt.Printf("%s : %d\n", stream.Title, stream.ViewerCount)
 }
@@ -61,21 +73,9 @@ hey there B U D   : 16138
 ```
 
 
-## Functions supported
-- [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) 
-- [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
-- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip)
-- [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip)
-- [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams)
-- [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata)
-- [GetTopGames](https://dev.twitch.tv/docs/api/reference#get-top-games)
-- [GetUsers](https://dev.twitch.tv/docs/api/reference#get-users)
-- [GetUsersFollows](https://dev.twitch.tv/docs/api/reference#get-users-follows)
-- [UpdateUser](https://dev.twitch.tv/docs/api/reference#update-user)
-- [GetVideos](https://dev.twitch.tv/docs/api/reference#get-videos)
-
 ## TODO
 - Try refactoring requests
 - Use net/url
 - Authentication
 - Complete testing
+- Committing test files
