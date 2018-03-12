@@ -9,7 +9,13 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 	retStreams := streamData{}
 
 	if qp.First > 100 {
-		return nil, retCursor, errors.New("\"First\" parameter cannot be greater than 100")
+		return nil, retCursor, errors.New("GetStreams: \"First\" parameter cannot be greater than 100")
+	}
+	if qp.First <= 0 {
+		qp.First = 20
+	}
+	if len(qp.Language) > 100 || len(qp.ComunityID) > 100 || len(qp.UserID) > 100 || len(qp.UserLogin) > 100 {
+		return nil, retCursor, errors.New("GetStreams: parameter cannot be greater than 100")
 	}
 
 	uri := makeUri(BaseURL+StreamEP, qp)

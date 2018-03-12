@@ -21,10 +21,10 @@ type StreamQueryParameters struct {
 	ComunityID []string `comunity_id` //Optional. Returns streams in a specified community ID. You can specify up to 100 IDs.
 	First      int      `first`       //Optional. Maximum number of objects to return. Maximum: 100. Default: 20.
 	GameID     string   `game_id`     //Optional. Returns streams broadcasting the specified game ID. You can specify up to 100 IDs.
-	Language   string   `language`    //Optional. Stream language. You can specify up to 100 languages.
+	Language   []string `language`    //Optional. Stream language. You can specify up to 100 languages.
 	Type       string   `type`        //Optional. Stream type: "all", "live", "vodcast". Default: "all".
-	UserID     string   `user_id`     //Optional. Returns streams broadcast by one or more of the specified user IDs. You can specify up to 100 IDs.
-	UserLogin  string   `user_login`  //Optional. Returns streams broadcast by one or more of the specified user login names. You can specify up to 100 names.
+	UserID     []string `user_id`     //Optional. Returns streams broadcast by one or more of the specified user IDs. You can specify up to 100 IDs.
+	UserLogin  []string `user_login`  //Optional. Returns streams broadcast by one or more of the specified user login names. You can specify up to 100 names.
 }
 
 // VideoQueryParameters represents the query string's parameters used for API calls to the "video" endpoint.
