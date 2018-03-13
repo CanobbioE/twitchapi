@@ -12,9 +12,9 @@ func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParamete
 		return "", errors.New("Manifest ID's length must be between 1 and 64")
 	}
 
-	err := isValid("type", qp.Type, []string{"bulk_drop_grant"})
+	err := isValid("type", qp.Type, []string{"bulk_drops_grant"})
 	if err != nil {
-		return "", errors.New("Only \"bulk_drop_grant\" supported as entitle type")
+		return "", errors.New("Only \"bulk_drops_grant\" supported as entitle type")
 	}
 
 	uri := makeUri(BaseURL+EntitlementsEP+UploadEP, qp)

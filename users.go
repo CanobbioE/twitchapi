@@ -5,7 +5,8 @@ import (
 	"net/url"
 )
 
-// GetUsers gets information about one or more specified Twitch users, identified by id or login.
+// GetUsers gets information about one or more specified Twitch users,
+// identified by id or login.
 // The authentication token must have scope 'user:read:mail'
 func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error) {
 	retUsers := userData{}
@@ -46,7 +47,8 @@ func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error
 	return retUsers.Data, nil
 }
 
-// GetUsersFollows gets information on follow relationships between two Twitch users.
+// GetUsersFollows gets information on follow relationships between two Twitch
+// users. At minimum, from id or to_id must be porvided.
 // It also returns the number of items returned.
 //
 // - If only from_id was in the request, returns the total number of followed users.
@@ -75,7 +77,7 @@ func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, int, e
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, retTotal, errors.New("GetUsersFollows returned status" + res.Status)
+		return nil, retTotal, errors.New("GetUsersFollows returned status " + res.Status)
 	}
 
 	if err := parseResult(res, &retUsersFollows); err != nil {
@@ -85,7 +87,8 @@ func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, int, e
 	return retUsersFollows.Data, retTotal, nil
 }
 
-// UpdateUser updates the description of a user specified by the authentication token (authTkn).
+// UpdateUser updates the description of a user specified by the authentication
+// token (authTkn).
 // The authentication token must have scope user:edit
 func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 	retUsers := userData{}
@@ -112,7 +115,7 @@ func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("UpdateUser returned status" + res.Status)
+		return nil, errors.New("UpdateUser returned status " + res.Status)
 	}
 
 	if err := parseResult(res, &retUsers); err != nil {

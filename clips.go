@@ -32,7 +32,7 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("CreateClip returned status:" + res.Status)
+		return nil, errors.New("CreateClip returned status: " + res.Status)
 	}
 
 	if err := parseResult(res, &retClipInfo); err != nil {
@@ -61,7 +61,7 @@ func (c *Client) GetClip(id string) ([]Clip, error) {
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("CreateClip returned status:" + res.Status)
+		return nil, errors.New("CreateClip returned status: " + res.Status)
 	}
 
 	retClip := clipData{}

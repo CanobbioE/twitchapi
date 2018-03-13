@@ -36,7 +36,7 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("GetGames returned status" + res.Status)
+		return nil, errors.New("GetGames returned status " + res.Status)
 	}
 
 	if err := parseResult(res, &retGames); err != nil {
@@ -49,11 +49,18 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 	retGames := gameData{}
 
+	if qp.First > 100 {
+		return nil, errors.New("GetTopGames: \"First\" parameter cannot be greater than 100")
+	}
+	if qp.First <= 0 {
+		qp.First = 20
+	}
+
+	uri := makeUri(BaseURL+GamesEP+TopGamesEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
-	uri := makeUri(BaseURL+GamesEP+TopGamesEP, qp)
 
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
@@ -62,7 +69,7 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("GetTopGames returned status" + res.Status)
+		return nil, errors.New("GetTopGames returned status " + res.Status)
 	}
 
 	if err := parseResult(res, &retGames); err != nil {

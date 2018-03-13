@@ -14,8 +14,21 @@ func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 	retCursor := Cursor{}
 	var uri string
 
-	if !isNil(qp.ID) {
+	if isNil(qp.ID) {
 		var err error
+
+		// default values
+		if isNil(qp.Period) {
+			qp.Period = "all"
+		}
+		if isNil(qp.Sort) {
+			qp.Sort = "time"
+		}
+		if isNil(qp.Type) {
+			qp.Type = "all"
+		}
+
+		// check parameters
 		err = isValid("period", qp.Period, []string{"all", "day", "month", "week"})
 		if err != nil {
 			return nil, retCursor, err
@@ -32,9 +45,13 @@ func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 			return nil, retCursor, errors.New("GetVideos: \"First\" parameter cannot be greater than 100")
 		}
 		uri = makeUri(BaseURL+VideosEP, qp)
+
 	} else {
 		fmt.Println("GetVideos: \"id\" was specified. Ignoring all the other parameters")
-		var u url.URL
+		u, err := url.Parse(BaseURL + VideosEP)
+		if err != nil {
+			return nil, retCursor, err
+		}
 		v := url.Values{}
 		v.Add("id", qp.ID)
 		u.RawQuery = v.Encode()
@@ -52,7 +69,6 @@ func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 	}
 	defer res.Body.Close()
 
-	// parse
 	if err := parseResult(res, &retVideos); err != nil {
 		return nil, retCursor, err
 	}
