@@ -41,7 +41,7 @@ Authentication involves:
 The documentation can be found on [go doc](https://godoc.org/github.com/CanobbioE/twitchapi).
 
 ### Example
-First of all make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client.
+Make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client, hence a client id.
 
 This code gets the top five English streams and print them:
 ```go
@@ -86,5 +86,3 @@ IWD - Jungle Abuse : 6600
 ## TODO
 - Try refactoring requests
 - Authentication
-- Complete testing (current coverage 38%)
-- Committing test files
