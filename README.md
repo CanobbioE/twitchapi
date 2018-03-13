@@ -5,8 +5,8 @@
 
 ## Description
 This project is a go wrapper for the [New Twitch API](https://dev.twitch.tv/docs/api).  
-twitchapi provides a set of functuins to perform calls to the new Twitch API.  
-Although most functions checks for input correctness, I highly recomend to check the [API reference](https://dev.twitch.tv/docs/api/reference).
+The package provides a set of functcions to perform calls to the new Twitch API.  
+Although most functions checks for input correctness, I highly recomend to check the [API reference](https://dev.twitch.tv/docs/api/reference) before starting to use _twitchapi_ .
 
 ## Why twitchapi?
 To this day this is the most updated and complete go wrapper for the new Twitch API.
@@ -31,57 +31,59 @@ go get github.com/canobbioe/twitchapi
 - [GetVideos](https://dev.twitch.tv/docs/api/reference#get-videos)
 
 ## Authentication
-Authentication is not yet implemented within this pkg.  
+Authentication is not yet implemented within this package.  
 Authentication involves:  
 - [Registering](https://dev.twitch.tv/dashboard/apps/create) your client.
 - [Getting a token](https://dev.twitch.tv/docs/authentication#getting-tokens).
 - [Sending a token](https://dev.twitch.tv/docs/authentication#sending-user-access-and-app-access-tokens).
 
 ## Usage
-First of all make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client, then proceed as shown.  
+The documentation can be found on [go doc](https://godoc.org/github.com/CanobbioE/twitchapi).
+
+### Example
+First of all make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client.
+This code gets the top five English streams and print them:
 ```go
 // Import the package
-import "github.com/CanobbioE/twitchapi"
+import (
+	"fmt"
+	"github.com/canobbioe/twitchapi"
+)
 
-// Create a new client
-c := twitchapi.NewClient("client-id")
+func main() {
+	// Create a new client
+	c := twitchapi.NewClient("your-client-id")
 
-// Create an input struct as needed
-qp := StreamQueryParameters{
-	First: 20,
-	Language: []string{"en"},
-}
+	// Create an input struct as needed
+	qp := twitchapi.StreamQueryParameters{
+		First:    5,
+		Language: []string{"en"},
+	}
 
-// Perform the API call
-streams, cursor, err := c.GetStreams(qp)
-if err != nil {
-	// handle error
-}
+	// Perform the API call
+	streams, _, err := c.GetStreams(qp)
+	if err != nil {
+		// handle error
+	}
 
-// Access the values
-for _, stream := range streams {
-	fmt.Printf("%s : %d\n", stream.Title, stream.ViewerCount)
+	// Access the values
+	for _, stream := range streams {
+		fmt.Printf("%s : %d\n", stream.Title, stream.ViewerCount)
+	}
 }
 ```
 Output:
 ```
-We gaming | @Ninja on twitter and Instagram : 110299
-
-buff kaisa : 18888
-
-hey there B U D   : 16138
-
-༼ ºل͟º ༼ ºل͟º ༼ ºل͟º ༽ ºل͟º ༽ ºل͟º ༽ : 15337
-
-★AMAZ★ No more Rag in Arena nooooo =D | Battlerite later!! : 11316
-
-...
+ TSM Dakotaz - 1400+ Wins 🏆 | youtube.com/dakotaz | twitter.com/dakotaz : 18768
+LCK Spring: ROX vs. KZ - KSV vs. JAG : 15100
+Giving GabeN all my money || [A] @AdmiralBulldog : 10714
+IWD - Jungle Abuse : 6600
+[PC] Day 2 of troll alert sounds, Sanity barely being held on to | Twitter @JacobHysteria 1100+ wins : 5570
 ```
 
 
 ## TODO
 - Try refactoring requests
-- Use net/url
 - Authentication
-- Complete testing
+- Complete testing (current coverage 38%)
 - Committing test files
