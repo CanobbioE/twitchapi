@@ -42,6 +42,7 @@ The documentation can be found on [go doc](https://godoc.org/github.com/Canobbio
 
 ### Example
 First of all make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client.
+
 This code gets the top five English streams and print them:
 ```go
 // Import the package
