@@ -1,3 +1,4 @@
+// Package twitchapi implements a library for API calls to the streaming platform Twitch.
 package twitchapi
 
 import "net/http"
