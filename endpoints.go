@@ -1,7 +1,7 @@
 package twitchapi
 
 /*
-	This files contains the endpoints used for API calls
+This files contains the endpoints used for API calls
 */
 
 const (
@@ -16,4 +16,5 @@ const (
 	UsersEP        = "/users"
 	FollowsEP      = "/follows"
 	VideosEP       = "/videos"
+	AnalyticsEP    = "/analytics"
 )

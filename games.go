@@ -78,3 +78,39 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 
 	return retGames.Data, nil
 }
+
+// GetGameAnalytics gets an URL that game developers can use to download
+// analytics reports for their games. The URL is valid for one minute.
+// An authorization token is required with scope "analytics:read:games"
+func GetGameAnalytics(id string, authTkn string) []Analytic {
+	uri := BaseURL + AnalyticsEP + GamesEP
+
+	if !isNil(id) {
+		uri += "?id=" + id
+	}
+
+	h := Header{}
+	if !isNil(authTkn) {
+		h.Field = "Authorization"
+		h.Value = "Bearer " + authTkn
+	} else {
+		return nil, errors.New("GetGameAnalytics: An authorization token is needed")
+	}
+
+	res, err := c.apiCall("GET", uri, h)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.Status != "200 OK" {
+		return nil, errors.New("GetGameAnalytics returned status: " + res.Status)
+	}
+
+	retAnalytics := analyticsData{}
+	if err := parseResult(res, &retAnalytics); err != nil {
+		return nil, err
+	}
+
+	return retAnalytics.Data, nil
+}

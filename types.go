@@ -10,26 +10,26 @@ type userData struct {
 // User represents a user information as described by the Twitch API
 // documentation (https://dev.twitch.tv/docs/api/reference#get-users).
 type User struct {
-	 // User's ID.
-	ID              string `json:"id"`               
-	 // User's login name.
-	Login           string `json:"login"`            
-	 // User's display name.
-	DisplayName     string `json:"display_name"`     
-	 // User's type: "staff", "admin", "global_mod", or "".
-	Type            string `json:"type"`             
-	 // User's broadcaster type: "partner", "affiliate", or "".
-	BroadCasterType string `json:"broadcaster_type"` 
-	 // User's channel description.
-	Description     string `json:"description"`      
-	 // URL of the user's profile's image.
+	// User's ID.
+	ID string `json:"id"`
+	// User's login name.
+	Login string `json:"login"`
+	// User's display name.
+	DisplayName string `json:"display_name"`
+	// User's type: "staff", "admin", "global_mod", or "".
+	Type string `json:"type"`
+	// User's broadcaster type: "partner", "affiliate", or "".
+	BroadCasterType string `json:"broadcaster_type"`
+	// User's channel description.
+	Description string `json:"description"`
+	// URL of the user's profile's image.
 	ProfileImageURL string `json:"profile_image_url"`
-	 // URL of the user's offline image.
+	// URL of the user's offline image.
 	OfflineImageURL string `json:"offline_image_url"`
-	 // Total number of views of the user's channel.
-	ViewCount       int    `json:"view_count"`       
-	 // User's email address. Returned if the request includes the user:read:edit scope.
-	Email           string `json:"email"`            
+	// Total number of views of the user's channel.
+	ViewCount int `json:"view_count"`
+	// User's email address. Returned if the request includes the user:read:edit scope.
+	Email string `json:"email"`
 }
 
 // userFollowData represents the information returned by GetUsersFollows.
@@ -41,11 +41,11 @@ type userFollowData struct {
 // UserFollows represents two users follow relationship as described by the
 // new Twitch API documentation (https://dev.twitch.tv/docs/api/reference#get-users-follows).
 type UserFollows struct {
-	 // ID of the user following the to_id user.
-	FromID     string `json:"from_id"`    
-	 // ID of the user being followed by the from_id user.
-	ToID       string `json:"to_id"`      
-	 // Date and time when the from_id user followed the to_id user.
+	// ID of the user following the to_id user.
+	FromID string `json:"from_id"`
+	// ID of the user being followed by the from_id user.
+	ToID string `json:"to_id"`
+	// Date and time when the from_id user followed the to_id user.
 	FollowedAt string `json:"followed_at"`
 }
 
@@ -59,30 +59,30 @@ type clipData struct {
 // Clip represent a clip as described by the twitch API documentation
 // (https://dev.twitch.tv/docs/api/reference#get-clip).
 type Clip struct {
-	 // ID of the clip being queried.
-	ID            string `json:"id"`            
-	 // URL where the clip can be viewed.
-	URL           string `json:"url"`           
-	 // URL to embed the clip.
-	EmbedURL      string `json:"embed_url"`     
-	 // User ID of the stream from which the clip was created.
+	// ID of the clip being queried.
+	ID string `json:"id"`
+	// URL where the clip can be viewed.
+	URL string `json:"url"`
+	// URL to embed the clip.
+	EmbedURL string `json:"embed_url"`
+	// User ID of the stream from which the clip was created.
 	BroadcasterID string `json:"broadcaster_id"`
-	 // ID of the user who created the clip.
-	CreatorID     string `json:"creator_id"`    
-	 // Number of times the clip has been viewed.
-	VideoID       string `json:"video_id"`      
-	 // ID of the game assigned to the stream when the clip was created.
-	GameID        string `json:"game_id"`       
-	 // Language of the stream from which the clip was created.
-	Language      string `json:"language"`      
-	 // Title of the clip.
-	Title         string `json:"title"`         
-	 // ID of the video from which the clip was created.
-	ViewCount     int    `json:"view_count"`    
-	 // Date when the clip was created.
-	CreatedAt     string `json:"created_at"`    
-	 // URL of the clip thumbnail.
-	ThumbnailURL  string `json:"thumbnail_url"` 
+	// ID of the user who created the clip.
+	CreatorID string `json:"creator_id"`
+	// Number of times the clip has been viewed.
+	VideoID string `json:"video_id"`
+	// ID of the game assigned to the stream when the clip was created.
+	GameID string `json:"game_id"`
+	// Language of the stream from which the clip was created.
+	Language string `json:"language"`
+	// Title of the clip.
+	Title string `json:"title"`
+	// ID of the video from which the clip was created.
+	ViewCount int `json:"view_count"`
+	// Date when the clip was created.
+	CreatedAt string `json:"created_at"`
+	// URL of the clip thumbnail.
+	ThumbnailURL string `json:"thumbnail_url"`
 }
 
 // clipInfoData represents an array of ClipInfo.
@@ -93,9 +93,9 @@ type clipInfoData struct {
 // ClipInfo represent the response generated by CreateClip as described by the
 // twitch API documentation (https://dev.twitch.tv/docs/api/reference#create-clip).
 type ClipInfo struct {
-	 // ID of the clip that was created.
-	ID      string `json:"id"`      
-	 // URL of the edit page for the clip.
+	// ID of the clip that was created.
+	ID string `json:"id"`
+	// URL of the edit page for the clip.
 	EditURL string `json:"edit_url"`
 }
 
@@ -108,7 +108,7 @@ type uploadData struct {
 
 // uploadURL represent the response returned by CreateEntitlementGrantsUploadURL.
 type uploadURL struct {
-	url string `json:"url"`
+	Url string `json:"url"`
 }
 
 // ------------- Games -------------
@@ -116,17 +116,31 @@ type uploadURL struct {
 // Game represents a game as described by the twitch API documentation
 // (https://dev.twitch.tv/docs/api/reference#get-games).
 type Game struct {
-	 // Game ID.
-	ID        string `json:"id"`         
-	 // Game name.
-	Name      string `json:"name"`       
-	 // Template URL for the game’s box art.
+	// Game ID.
+	ID string `json:"id"`
+	// Game name.
+	Name string `json:"name"`
+	// Template URL for the game’s box art.
 	BoxArtURL string `json:"box_art_url"`
 }
 
-// games represents an array of Game.
+// gameData represents an array of Game.
 type gameData struct {
-	Data []Game `json:data`
+	Data []Game `json:"data"`
+}
+
+// Analytic represents a game's analytics as described by the twithc API documentation
+// (https://dev.twitch.tv/docs/api/reference/#get-game-analytics).
+type Analytic struct {
+	// ID of the game whose analytics data is being provided.
+	GameID string `json:"game_id"`
+	// URL to the downloadable CSV file containing analytics data. Valid for 1 minute.
+	URL string `json:"URL"`
+}
+
+// analyticsData represents an array of Analytic.
+type analyticsData struct {
+	Data []Analytic `json:"data"`
 }
 
 // ------------- Metadatas -------------
@@ -134,54 +148,54 @@ type gameData struct {
 // StreamMetadata represents metadata information about a stream as described
 // by the Twitch API documentation (https://dev.twitch.tv/docs/api/reference#get-streams-metadata).
 type StreamMetadata struct {
-	 // User ID of the streamer (broadcaster).
-	UserID      string      `json:"user_id"`    
-	 // ID of the game being played on the stream: 488552 (Overwatch), 138585 (Hearthstone), or nil.
-	GameID      string      `json:"game_id"`    
-	 // Object containing the Overwatch metadata, if available; otherwise, nil.
-	Overwatch   Overwatch   `json:"overwatch"`  
-	 // Object containing the Hearthstone metadata, if available; otherwise, nil.
+	// User ID of the streamer (broadcaster).
+	UserID string `json:"user_id"`
+	// ID of the game being played on the stream: 488552 (Overwatch), 138585 (Hearthstone), or nil.
+	GameID string `json:"game_id"`
+	// Object containing the Overwatch metadata, if available; otherwise, nil.
+	Overwatch Overwatch `json:"overwatch"`
+	// Object containing the Hearthstone metadata, if available; otherwise, nil.
 	Hearthstone Hearthstone `json:"hearthstone"`
 }
 
 // Overwatch represents the overwatch metadata information.
 type Overwatch struct {
-	 // Overwatch metadata about the broadcaster.
+	// Overwatch metadata about the broadcaster.
 	Broadcaster OwBroadcaster `json:"broadcaster"`
 }
 
 // OwBroadcaster represents an Overwatch broadcaster.
 type OwBroadcaster struct {
-	 // Metadata about the Overwatch hero selected by the broadcaster.
+	// Metadata about the Overwatch hero selected by the broadcaster.
 	Hero OwHero `json:"hero"`
 }
 
 // OwHero represents the Overwatch hero metadata information.
 type OwHero struct {
-	 // Role of the Overwatch hero.
-	Role    string `json:"role"`   
-	 // Name of the Overwatch hero.
-	Name    string `json:"name"`   
-	 // Ability being used by the broadcaster.
+	// Role of the Overwatch hero.
+	Role string `json:"role"`
+	// Name of the Overwatch hero.
+	Name string `json:"name"`
+	// Ability being used by the broadcaster.
 	Ability string `json:"ability"`
 }
 
 // Hearthstone represents the hearthstone metadata information.
 type Hearthstone struct {
-	 // Hearthstone metadata about the broadcaster's opponent.
+	// Hearthstone metadata about the broadcaster's opponent.
 	Broadcaster HsHero `json:"broadcaster"`
-	 // Hearthstone metadata about the broadcaster .
-	Opponent    HsHero `json:"opponent"`   
+	// Hearthstone metadata about the broadcaster .
+	Opponent HsHero `json:"opponent"`
 }
 
 // HsHero represents the Hearthstone hero metadata information.
 type HsHero struct {
-	 // Type of Hearthstone hero.
-	Type  string `json:"type"` 
-	 // Class of the Hearthstone hero.
+	// Type of Hearthstone hero.
+	Type string `json:"type"`
+	// Class of the Hearthstone hero.
 	Class string `json:"class"`
-	 // Name of the Hearthstone hero.
-	Name  string `json:"name"` 
+	// Name of the Hearthstone hero.
+	Name string `json:"name"`
 }
 
 // metaData represents an array of StreamMetadata.
@@ -195,26 +209,26 @@ type metaData struct {
 // Stream represents a stream as described by the Twitch API documentation
 // (https://dev.twitch.tv/docs/api/reference#get-streams).
 type Stream struct {
-	 // Stream ID.
-	ID           string   `json:"id"`           
-	 // ID of the user who is streaming.
-	UserID       string   `json:"user_id"`      
-	 // ID of the game being played on the stream.
-	GameID       string   `json:"game_id"`      
-	 // Array of community IDs.
-	ComunityIDs  []string `json:"comunity_ids"` 
-	 // Stream type: "live", "vodcast", or ""..
-	Type         string   `json:"type"`         
-	 // Stream title.
-	Title        string   `json:"title"`        
-	 // Number of viewers watching the stream at the time of the query.
-	ViewerCount  int      `json:"viewer_count"` 
-	 // UTC timestamp.
-	StartedAt    string   `json:"started_at"`   
-	 // Stream language.
-	Language     string   `json:"language"`     
-	 // Thumbnail URL of the stream. All image URLs have variable width and height.
-	ThumbnailURL string   `json:"thumbnail_url"`
+	// Stream ID.
+	ID string `json:"id"`
+	// ID of the user who is streaming.
+	UserID string `json:"user_id"`
+	// ID of the game being played on the stream.
+	GameID string `json:"game_id"`
+	// Array of community IDs.
+	ComunityIDs []string `json:"comunity_ids"`
+	// Stream type: "live", "vodcast", or ""..
+	Type string `json:"type"`
+	// Stream title.
+	Title string `json:"title"`
+	// Number of viewers watching the stream at the time of the query.
+	ViewerCount int `json:"viewer_count"`
+	// UTC timestamp.
+	StartedAt string `json:"started_at"`
+	// Stream language.
+	Language string `json:"language"`
+	// Thumbnail URL of the stream. All image URLs have variable width and height.
+	ThumbnailURL string `json:"thumbnail_url"`
 }
 
 // streams represents an array of Stream.
@@ -233,26 +247,26 @@ type Cursor struct {
 // Video represents a video information as described by the Twitch API
 // documentation (https://dev.twitch.tv/docs/api/reference#get-videos).
 type Video struct {
-	 // ID of the video.
-	ID           string `json:"id"`           
-	 // ID of the user who owns the video.
-	UserID       string `json:"user_id"`      
-	 // Title of the video.
-	Title        string `json:"title"`        
-	 // Description of the video.
-	Description  string `json:"description"`  
-	 // Date when the video was created.
-	CreatedAt    string `json:"created_at"`   
-	 // Date when the video was published.
-	PublishedAt  string `json:"published_at"` 
-	 // Template URL for the thumbnail of the video.
+	// ID of the video.
+	ID string `json:"id"`
+	// ID of the user who owns the video.
+	UserID string `json:"user_id"`
+	// Title of the video.
+	Title string `json:"title"`
+	// Description of the video.
+	Description string `json:"description"`
+	// Date when the video was created.
+	CreatedAt string `json:"created_at"`
+	// Date when the video was published.
+	PublishedAt string `json:"published_at"`
+	// Template URL for the thumbnail of the video.
 	ThumbnailURL string `json:"thumbnail_url"`
-	 // Number of times the video has been viewed.
-	ViewCount    int    `json:"view_count"`   
-	 // Language of the video.
-	Language     string `json:"language"`     
-	 // Length of the video.
-	Duration     string `json:"duration"`     
+	// Number of times the video has been viewed.
+	ViewCount int `json:"view_count"`
+	// Language of the video.
+	Language string `json:"language"`
+	// Length of the video.
+	Duration string `json:"duration"`
 }
 
 // videoData represents an array of Video.
