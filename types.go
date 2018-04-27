@@ -108,7 +108,7 @@ type uploadData struct {
 
 // uploadURL represent the response returned by CreateEntitlementGrantsUploadURL.
 type uploadURL struct {
-	Url string `json:"url"`
+	URL string `json:"url"`
 }
 
 // ------------- Games -------------

@@ -41,5 +41,5 @@ func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParamete
 		return "", err
 	}
 
-	return retUploadURL.Data[0].url, nil
+	return retUploadURL.Data[0].URL, nil
 }

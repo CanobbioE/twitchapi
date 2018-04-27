@@ -82,7 +82,7 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 // GetGameAnalytics gets an URL that game developers can use to download
 // analytics reports for their games. The URL is valid for one minute.
 // An authorization token is required with scope "analytics:read:games"
-func (c *Client) GetGameAnalytics(id string, authTkn string) []Analytic {
+func (c *Client) GetGameAnalytics(id string, authTkn string) ([]Analytic, error) {
 	uri := BaseURL + AnalyticsEP + GamesEP
 
 	if !isNil(id) {
