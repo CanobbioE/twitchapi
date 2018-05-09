@@ -17,4 +17,6 @@ const (
 	FollowsEP      = "/follows"
 	VideosEP       = "/videos"
 	AnalyticsEP    = "/analytics"
+	BitsEP         = "/bits"
+	LeaderboardEP  = "/leaderboard"
 )
