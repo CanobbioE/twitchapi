@@ -19,9 +19,10 @@ go get github.com/canobbioe/twitchapi
 ```
 
 ## Functions supported
+- [GetBitsLeaderboard](https://dev.twitch.tv/docs/api/reference/#get-bits-leaderboard)
 - [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) 
 - [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
-- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip)
+- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip) **TO BE UPDATED!**
 - [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip)
 - [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams)
 - [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata)
@@ -44,7 +45,7 @@ The documentation can be found on [go doc](https://godoc.org/github.com/Canobbio
 ### Example
 Make sure to have a [registered](https://dev.twitch.tv/docs/authentication#registration) client, hence a client id.
 
-This code gets the top five English streams and print them:
+This code gets the top five English streams and prints the resutlt:
 ```go
 // Import the package
 import (
@@ -87,4 +88,5 @@ IWD - Jungle Abuse : 6600
 ## TODO
 - Try refactoring requests
 - Authentication
-- Pray for a valid badge from gocover.io (current coverage 80.3%)
+- Update GetClip
+- Remove setting default values
