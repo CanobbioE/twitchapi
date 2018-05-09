@@ -41,12 +41,18 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	return retClipInfo.Data, nil
 }
 
-// GetClip gets information about a clip specified by an optional id.
-func (c *Client) GetClip(id string) ([]Clip, error) {
-	uri := BaseURL + ClipsEP
+// GetClip gets information about one or more clips specified by an id (broadcaster, game, clip).
+func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
+	retClip := clipData{}
 
-	if !isNil(id) {
-		uri += "?id=" + id
+	if isNil(qp.BroadcasterID) && isNil(qp.GameID) && isNil(qp.ID) {
+		err := errors.New("GetClip: at least one id must be specified")
+		return []Clip{}, Cursor{}, err
+	}
+
+	if !isNil(qp.First) && (qp.First > 100 || qp.First < 0) {
+		err := errors.New("GetClip: First parameter must be between 0 and 100")
+		return []Clip{}, Cursor{}, err
 	}
 
 	h := Header{
@@ -54,20 +60,22 @@ func (c *Client) GetClip(id string) ([]Clip, error) {
 		Value: c.ClientID,
 	}
 
+	uri := makeUri(BaseURL+ClipsEP, qp)
+
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
-		return nil, err
+		return []Clip{}, Cursor{}, err
 	}
 	defer res.Body.Close()
 
 	if res.Status != "200 OK" {
-		return nil, errors.New("CreateClip returned status: " + res.Status)
+		err := errors.New("CreateClip returned status: " + res.Status)
+		return []Clip{}, Cursor{}, err
 	}
 
-	retClip := clipData{}
 	if err := parseResult(res, &retClip); err != nil {
-		return nil, err
+		return []Clip{}, Cursor{}, err
 	}
 
-	return retClip.Data, nil
+	return retClip.Data, retClip.Cursor, nil
 }

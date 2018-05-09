@@ -112,3 +112,20 @@ type BitsQueryParameters struct {
 	// Optional. ID of the user whose resutls are returned.
 	UserID string `param:"user_id"`
 }
+
+// ClipQueryParameter represents the query string's parameters used for API calls to the "clips" endpoint. (see https://dev.twitch.tv/docs/api/reference/#get-clip for complete documentation).
+// For a query to be valid only one between "id", "broadcaster_id" or "game_id" must be specified.
+type ClipQueryParameter struct {
+	// Required. ID of the broadcaster for who top clips are returned.
+	BroadcasterID string `param:"braodcaster_id"`
+	// Required. ID of the game for which top clips are returned.
+	GameID string `param:"game_id"`
+	// Required. ID of the clip being querued.
+	ID string `param:"id"`
+	// Optional. Cursor for forward pagination.
+	After string `param:"after"`
+	// Optional. Cursor for backward pagination.
+	Before string `param:"before"`
+	// Optional. Maximum number of objects to return. Max: 100. Deafult: 20.
+	First int `param:"first"`
+}
