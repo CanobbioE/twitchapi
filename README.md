@@ -22,7 +22,7 @@ go get github.com/canobbioe/twitchapi
 - [GetBitsLeaderboard](https://dev.twitch.tv/docs/api/reference/#get-bits-leaderboard)
 - [CreateClip](https://dev.twitch.tv/docs/api/reference#create-clip) 
 - [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
-- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip) **TO BE UPDATED!**
+- [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip)
 - [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip)
 - [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams)
 - [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata)
@@ -88,5 +88,5 @@ IWD - Jungle Abuse : 6600
 ## TODO
 - Try refactoring requests
 - Authentication
-- Update GetClip
 - Remove setting default values
+- Better coding
