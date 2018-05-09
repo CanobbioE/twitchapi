@@ -274,3 +274,31 @@ type videoData struct {
 	Data       []Video `json:"data"`
 	Pagination Cursor  `json:"pagination"`
 }
+
+// ------------- Bits -------------
+
+// bitsLeaderboardData represents an array of Leaderboard.
+type bitsLeaderboardData struct {
+	Data      []Leaderboard `json:"data"`
+	DateRange DateRange     `json:"date_range"`
+	Total     int           `json:"total"`
+}
+
+// DateRange represents the date range for the returned data.
+type DateRange struct {
+	// Start of the date range.
+	StartedAt string `json:"started_at"`
+	// End of the date range.
+	EndedAt string `json:"ended_at"`
+}
+
+// Leaderboard represents a Bits Leaderboard information as described by the
+// Twitch API documentation (https://dev.twitch.tv/docs/api/reference/#get-bits-leaderboard).
+type Leaderboard struct {
+	// ID of the user (viewer) in the leaderboard entry.
+	UserID string `json:"user_id"`
+	// Leaderboard rank of the user.
+	Rank int `json:"rank"`
+	// Leaderboard score (number of bits) of the user.
+	Score int `json:"score"`
+}
