@@ -100,3 +100,15 @@ type UserQueryParameters struct {
 	// Optional. User login name. Multiple login names can be specified. Limit: 100.
 	Logins []string `param:"login"`
 }
+
+// BitsQueryParameters represents the query string's parameters used for API calls to the "bits" endpoint. (see https://dev.twitch.tv/docs/api/reference/#get-bits-leaderboard for complete documentation)
+type BitsQueryParameters struct {
+	// Optional. Number of results to be returned. Maximum: 100. Default: 10.
+	Count int `param:"count"`
+	// Optional. Period over which data is aggregated. Valid values: "day", "week", "m.onth", "year", "all". Default: "all".
+	Period string `param:"period"`
+	// Optional. Time stamp for the period over which the returned data is aggregated.
+	StartedAt string `param:"started_at"`
+	// Optional. ID of the user whose resutls are returned.
+	UserID string `param:"user_id"`
+}
