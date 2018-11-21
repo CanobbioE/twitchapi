@@ -24,9 +24,9 @@ go get github.com/canobbioe/twitchapi
 - [CreateEntitlementGrantsUploadURL](https://dev.twitch.tv/docs/api/reference#create-entitlement-grants-upload-url)
 - [GetClip](https://dev.twitch.tv/docs/api/reference#get-clip)
 - [GetGames](https://dev.twitch.tv/docs/api/reference#get-clip)
+- [GetTopGames](https://dev.twitch.tv/docs/api/reference#get-top-games)
 - [GetStreams](https://dev.twitch.tv/docs/api/reference#get-streams)
 - [GetStreamsMetadata](https://dev.twitch.tv/docs/api/reference#get-streams-metadata)
-- [GetTopGames](https://dev.twitch.tv/docs/api/reference#get-top-games)
 - [GetUsers](https://dev.twitch.tv/docs/api/reference#get-users)
 - [GetUsersFollows](https://dev.twitch.tv/docs/api/reference#get-users-follows)
 - [UpdateUser](https://dev.twitch.tv/docs/api/reference#update-user)
@@ -90,3 +90,11 @@ IWD - Jungle Abuse : 6600
 - Authentication
 - Remove setting default values
 - Better coding
+- GetExtensionAnalytic
+- GetGameAnalytics
+- CreateStreamMaker
+- GetStreamMarkers
+- GetUserExtensions
+- GetUserActiveExtensions
+- GetWebHookSubscriptions
+
