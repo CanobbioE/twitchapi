@@ -22,7 +22,7 @@ func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error
 	}
 
 	h := Header{}
-	if !isNil(authTkn) {
+	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
@@ -94,7 +94,7 @@ func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 	retUsers := userData{}
 
 	h := Header{}
-	if !isNil(authTkn) {
+	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	}

@@ -16,7 +16,7 @@ func parseInput(input interface{}) map[string]interface{} {
 	for i := 0; i < s.NumField(); i++ {
 		curr := s.Field(i).Interface()
 		tag := fieldTag(reflect.TypeOf(input).FieldByIndex([]int{i}))
-		if !isNil(curr) {
+		if !isEmpty(curr) {
 			params[tag] = curr
 		}
 	}
@@ -28,8 +28,8 @@ func fieldTag(f reflect.StructField) string {
 	return string(f.Tag)
 }
 
-// isNil returns true if the given value (val) is equal to the zero of its type
-func isNil(val interface{}) bool {
+// isEmpty returns true if the given value (val) is equal to the zero of its type
+func isEmpty(val interface{}) bool {
 	if val == nil {
 		return true
 	}
@@ -59,11 +59,11 @@ func isValid(paramName, param string, shouldBe []string) error {
 }
 
 // makeUri creates a uri and returns it as string
-func makeUri(ep string, qp interface{}) string {
+func makeUri(location string, qp interface{}, notEmptyParams ...interface{}) string {
 
 	uri := &url.URL{}
 
-	uri, err := url.Parse(ep)
+	uri, err := url.Parse(location)
 	if err != nil {
 		panic(err)
 	}

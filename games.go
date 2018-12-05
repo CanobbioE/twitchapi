@@ -12,14 +12,14 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 	ids := qp.IDs
 	names := qp.Names
 
-	if isNil(ids) && isNil(names) {
+	if isEmpty(ids) && isEmpty(names) {
 		return nil, errors.New("At least one id or name must be specified")
 	}
-	if (!isNil(ids)) && len(ids) > 100 {
+	if (!isEmpty(ids)) && len(ids) > 100 {
 
 		return nil, errors.New("GetGames: A maximum of 100 ids can be specified")
 	}
-	if (!isNil(names)) && len(names) > 100 {
+	if (!isEmpty(names)) && len(names) > 100 {
 		return nil, errors.New("GetGames: A maximum of 100 names can be specified")
 	}
 
@@ -85,12 +85,12 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 func (c *Client) GetGameAnalytics(id string, authTkn string) ([]Analytic, error) {
 	uri := BaseURL + AnalyticsEP + GamesEP
 
-	if !isNil(id) {
+	if !isEmpty(id) {
 		uri += "?id=" + id
 	}
 
 	h := Header{}
-	if !isNil(authTkn) {
+	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {

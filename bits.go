@@ -9,14 +9,17 @@ import (
 func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]Leaderboard, DateRange, int, error) {
 	retBits := bitsLeaderboardData{}
 
+	// setting default min values
 	if qp.Count < 0 {
 		qp.Count = 10
 	}
+	// setting default max values
 	if qp.Count > 100 {
 		qp.Count = 100
 	}
 
-	if isNil(qp.Period) {
+	// checking for required fields
+	if isEmpty(qp.Period) {
 		qp.Period = "all"
 	} else {
 		valid := []string{"all", "day", "week", "month", "year"}
@@ -30,7 +33,7 @@ func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]L
 	}
 
 	h := Header{}
-	if !isNil(authTkn) {
+	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {

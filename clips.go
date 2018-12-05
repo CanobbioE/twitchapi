@@ -11,14 +11,14 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	retClipInfo := clipInfoData{}
 	uri := BaseURL + ClipsEP
 
-	if !isNil(broadcasterID) {
+	if !isEmpty(broadcasterID) {
 		uri += "?broadcaster_id=" + broadcasterID
 	} else {
 		return nil, errors.New("CreateClip: broadcasterID must be specified")
 	}
 
 	h := Header{}
-	if !isNil(authTkn) {
+	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
@@ -45,12 +45,12 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 	retClip := clipData{}
 
-	if isNil(qp.BroadcasterID) && isNil(qp.GameID) && isNil(qp.ID) {
+	if isEmpty(qp.BroadcasterID) && isEmpty(qp.GameID) && isEmpty(qp.ID) {
 		err := errors.New("GetClip: at least one id must be specified")
 		return []Clip{}, Cursor{}, err
 	}
 
-	if !isNil(qp.First) && (qp.First > 100 || qp.First < 0) {
+	if !isEmpty(qp.First) && (qp.First > 100 || qp.First < 0) {
 		err := errors.New("GetClip: First parameter must be between 0 and 100")
 		return []Clip{}, Cursor{}, err
 	}

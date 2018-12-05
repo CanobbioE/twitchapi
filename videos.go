@@ -14,17 +14,17 @@ func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 	retCursor := Cursor{}
 	var uri string
 
-	if isNil(qp.ID) {
+	if isEmpty(qp.ID) {
 		var err error
 
 		// default values
-		if isNil(qp.Period) {
+		if isEmpty(qp.Period) {
 			qp.Period = "all"
 		}
-		if isNil(qp.Sort) {
+		if isEmpty(qp.Sort) {
 			qp.Sort = "time"
 		}
-		if isNil(qp.Type) {
+		if isEmpty(qp.Type) {
 			qp.Type = "all"
 		}
 

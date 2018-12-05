@@ -19,7 +19,7 @@ func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParamete
 
 	uri := makeUri(BaseURL+EntitlementsEP+UploadEP, qp)
 	h := Header{}
-	if !isNil(authTkn) {
+	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
