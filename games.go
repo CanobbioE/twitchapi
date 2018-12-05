@@ -12,6 +12,7 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 	ids := qp.IDs
 	names := qp.Names
 
+	// cheking required fields
 	if isEmpty(ids) && isEmpty(names) {
 		return nil, errors.New("At least one id or name must be specified")
 	}
@@ -23,18 +24,21 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 		return nil, errors.New("GetGames: A maximum of 100 names can be specified")
 	}
 
-	uri := makeUri(BaseURL+GamesEP, qp)
+	// create the header
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
 
+	// perform API call
+	uri := makeUri(BaseURL+GamesEP, qp)
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
+	// parse result
 	if res.Status != "200 OK" {
 		return nil, errors.New("GetGames returned status " + res.Status)
 	}
@@ -49,6 +53,7 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 	retGames := gameData{}
 
+	// check for parameters boundries, set default min value
 	if qp.First > 100 {
 		return nil, errors.New("GetTopGames: \"First\" parameter cannot be greater than 100")
 	}
@@ -56,18 +61,21 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 		qp.First = 20
 	}
 
-	uri := makeUri(BaseURL+GamesEP+TopGamesEP, qp)
+	// create the header
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
 
+	// perform API call
+	uri := makeUri(BaseURL+GamesEP+TopGamesEP, qp)
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
+	// parse the result
 	if res.Status != "200 OK" {
 		return nil, errors.New("GetTopGames returned status " + res.Status)
 	}
@@ -85,10 +93,12 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 func (c *Client) GetGameAnalytics(id string, authTkn string) ([]Analytic, error) {
 	uri := BaseURL + AnalyticsEP + GamesEP
 
+	// checking required parameters
 	if !isEmpty(id) {
 		uri += "?id=" + id
 	}
 
+	// create the header
 	h := Header{}
 	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
@@ -97,12 +107,14 @@ func (c *Client) GetGameAnalytics(id string, authTkn string) ([]Analytic, error)
 		return nil, errors.New("GetGameAnalytics: An authorization token is needed")
 	}
 
+	// perform API call
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
+	// parse the result
 	if res.Status != "200 OK" {
 		return nil, errors.New("GetGameAnalytics returned status: " + res.Status)
 	}

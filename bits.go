@@ -42,7 +42,7 @@ func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]L
 		return []Leaderboard{}, DateRange{}, -1, err
 	}
 
-	// perform the request
+	// perform API call
 	uri := makeUri(BaseURL+BitsEP+LeaderboardEP, qp)
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
@@ -50,7 +50,7 @@ func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]L
 	}
 	defer res.Body.Close()
 
-	// parse the results
+	// parse the response
 	if err := parseResult(res, &retBits); err != nil {
 		return []Leaderboard{}, DateRange{}, -1, err
 	}

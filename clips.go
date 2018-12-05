@@ -11,12 +11,14 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	retClipInfo := clipInfoData{}
 	uri := BaseURL + ClipsEP
 
+	// checking required fields
 	if !isEmpty(broadcasterID) {
 		uri += "?broadcaster_id=" + broadcasterID
 	} else {
 		return nil, errors.New("CreateClip: broadcasterID must be specified")
 	}
 
+	// creating the header
 	h := Header{}
 	if !isEmpty(authTkn) {
 		h.Field = "Authorization"
@@ -25,12 +27,14 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 		return nil, errors.New("CreateClip: An authorization token is needed")
 	}
 
+	// perform API call
 	res, err := c.apiCall("POST", uri, h)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
+	// parse the response
 	if res.Status != "200 OK" {
 		return nil, errors.New("CreateClip returned status: " + res.Status)
 	}
@@ -45,6 +49,7 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 	retClip := clipData{}
 
+	// checking required fields
 	if isEmpty(qp.BroadcasterID) && isEmpty(qp.GameID) && isEmpty(qp.ID) {
 		err := errors.New("GetClip: at least one id must be specified")
 		return []Clip{}, Cursor{}, err
@@ -55,19 +60,21 @@ func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 		return []Clip{}, Cursor{}, err
 	}
 
+	// creating the header
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
 
 	uri := makeUri(BaseURL+ClipsEP, qp)
-
+	// perform API call
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return []Clip{}, Cursor{}, err
 	}
 	defer res.Body.Close()
 
+	// parse result
 	if res.Status != "200 OK" {
 		err := errors.New("CreateClip returned status: " + res.Status)
 		return []Clip{}, Cursor{}, err
