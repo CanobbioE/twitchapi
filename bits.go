@@ -9,27 +9,19 @@ import (
 func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]Leaderboard, DateRange, int, error) {
 	retBits := bitsLeaderboardData{}
 
-	// setting default min values
-	if qp.Count < 0 {
-		qp.Count = 10
-	}
-	// setting default max values
-	if qp.Count > 100 {
-		qp.Count = 100
-	}
+	qp.Count = setDefaultValueIf(qp.Count <= 0, &qp.Count, 10).(int)
+	qp.Count = setDefaultValueIf(qp.Count > 100, &qp.Count, 100).(int)
 
 	// checking for required fields
-	if isEmpty(qp.Period) {
+	if err := checkRequiredFields("GetBitsLeaderboard", qp.Period); err != nil {
 		qp.Period = "all"
-	} else {
-		valid := []string{"all", "day", "week", "month", "year"}
-		err := isValid("period", qp.Period, valid)
-		if err != nil {
-			return []Leaderboard{}, DateRange{}, -1, err
-		}
-		if qp.Period == "all" {
-			qp.StartedAt = ""
-		}
+	}
+	valid := []string{"all", "day", "week", "month", "year"}
+	if err := isValid("period", qp.Period, valid); err != nil {
+		return []Leaderboard{}, DateRange{}, -1, err
+	}
+	if qp.Period == "all" {
+		qp.StartedAt = ""
 	}
 
 	// creating the header
@@ -38,7 +30,7 @@ func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]L
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
-		err := errors.New("GetBitsLeaderboard: An authorization token is needed")
+		err := errors.New("GetBitsLeaderboard: an authorization token is needed")
 		return []Leaderboard{}, DateRange{}, -1, err
 	}
 

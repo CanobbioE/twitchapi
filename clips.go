@@ -11,20 +11,15 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	retClipInfo := clipInfoData{}
 	uri := BaseURL + ClipsEP
 
-	// checking required fields
-	if !isEmpty(broadcasterID) {
-		uri += "?broadcaster_id=" + broadcasterID
-	} else {
-		return nil, errors.New("CreateClip: broadcasterID must be specified")
+	if err := checkRequiredFields("CreateClip", broadcasterID, authTkn); err != nil {
+		return nil, err
 	}
+	uri += "?broadcaster_id=" + broadcasterID
 
 	// creating the header
-	h := Header{}
-	if !isEmpty(authTkn) {
-		h.Field = "Authorization"
-		h.Value = "Bearer " + authTkn
-	} else {
-		return nil, errors.New("CreateClip: An authorization token is needed")
+	h := Header{
+		Field: "Authorization",
+		Value: "Bearer " + authTkn,
 	}
 
 	// perform API call
@@ -38,10 +33,10 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	if res.Status != "200 OK" {
 		return nil, errors.New("CreateClip returned status: " + res.Status)
 	}
-
 	if err := parseResult(res, &retClipInfo); err != nil {
 		return nil, err
 	}
+
 	return retClipInfo.Data, nil
 }
 
@@ -56,7 +51,7 @@ func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 	}
 
 	if !isEmpty(qp.First) && (qp.First > 100 || qp.First < 0) {
-		err := errors.New("GetClip: First parameter must be between 0 and 100")
+		err := errors.New("GetClip: first parameter must be between 0 and 100")
 		return []Clip{}, Cursor{}, err
 	}
 
@@ -66,8 +61,8 @@ func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 		Value: c.ClientID,
 	}
 
-	uri := makeUri(BaseURL+ClipsEP, qp)
 	// perform API call
+	uri := makeUri(BaseURL+ClipsEP, qp)
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return []Clip{}, Cursor{}, err
@@ -79,7 +74,6 @@ func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 		err := errors.New("CreateClip returned status: " + res.Status)
 		return []Clip{}, Cursor{}, err
 	}
-
 	if err := parseResult(res, &retClip); err != nil {
 		return []Clip{}, Cursor{}, err
 	}
