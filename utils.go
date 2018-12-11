@@ -48,7 +48,7 @@ func isEmpty(val interface{}) bool {
 }
 
 // isValid checks if a parameter has a valid value
-func isValid(paramName, param string, shouldBe []string) error {
+func isValid(paramName, param interface{}, shouldBe ...interface{}) error {
 	for _, val := range shouldBe {
 		if param == val {
 			return nil
@@ -90,4 +90,22 @@ func makeUri(location string, qp interface{}, notEmptyParams ...interface{}) str
 	uri.RawQuery = values.Encode()
 
 	return uri.String()
+}
+
+// checkRequiredFields verifies that all the required fields for the apiCallName
+// are not empty
+func checkRequiredFields(apiCallName string, params ...interface{}) error {
+	for _, p := range params {
+		if isEmpty(p) {
+			return fmt.Errorf("%s: a required parameter for the request is missing", apiCallName)
+		}
+	}
+	return nil
+}
+
+func setDefaultValueIf(condition bool, param, defaultVal interface{}) interface{} {
+	if condition {
+		return defaultVal
+	}
+	return param
 }
