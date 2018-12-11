@@ -92,9 +92,10 @@ IWD - Jungle Abuse : 6600
 - Better coding
 - GetExtensionAnalytic
 - GetGameAnalytics
-- CreateStreamMaker
+- CreateStreamMarker
 - GetStreamMarkers
 - GetUserExtensions
 - GetUserActiveExtensions
+- UpdateUserExtensions
 - GetWebHookSubscriptions
 
