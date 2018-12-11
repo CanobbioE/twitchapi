@@ -19,4 +19,9 @@ const (
 	AnalyticsEP    = "/analytics"
 	BitsEP         = "/bits"
 	LeaderboardEP  = "/leaderboard"
+	ExtensionsEP   = "/extensions"
+	MarkersEP      = "/markers"
+	ListEP         = "/list"
+	WebhooksEP     = "/webhooks"
+	SubscriptionEP = "/subscription"
 )
