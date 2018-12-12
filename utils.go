@@ -59,7 +59,7 @@ func isValid(paramName, param interface{}, shouldBe ...interface{}) error {
 }
 
 // makeUri creates a uri and returns it as string
-func makeUri(location string, qp interface{}, notEmptyParams ...interface{}) string {
+func makeUri(location string, qp interface{}) string {
 
 	uri := &url.URL{}
 
@@ -92,20 +92,34 @@ func makeUri(location string, qp interface{}, notEmptyParams ...interface{}) str
 	return uri.String()
 }
 
-// checkRequiredFields verifies that all the required fields for the apiCallName
-// are not empty
-func checkRequiredFields(apiCallName string, params ...interface{}) error {
+// checkRequiredFields verifies that all/any of the required fields
+// (based on the specified logic) for the apiCallName are not empty
+// logic = "all" means ALL parameters must be NOT empty
+// logic = "any" means AT LEAST ONE parameter must be NOT empty
+func checkRequiredFields(apiCallName, logic string, params ...interface{}) error {
 	for _, p := range params {
-		if isEmpty(p) {
+		if isEmpty(p) && logic == "all" {
 			return fmt.Errorf("%s: a required parameter for the request is missing", apiCallName)
+		} else if !isEmpty(p) && logic == "any" {
+			return nil
 		}
 	}
 	return nil
 }
 
+// setDefaultValueIf returns the default value for a param if a condition is met.
 func setDefaultValueIf(condition bool, param, defaultVal interface{}) interface{} {
 	if condition {
 		return defaultVal
 	}
 	return param
+}
+
+// makeRange creates an int slice with all the integers from min to max (inclusive)
+func makeRange(min, max int) []int {
+	a := make([]int, max-min+1)
+	for i := 0; min <= max; min++ {
+		a[i] = min
+	}
+	return a
 }
