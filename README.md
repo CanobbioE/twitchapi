@@ -86,10 +86,8 @@ IWD - Jungle Abuse : 6600
 
 
 ## TODO
-- Try refactoring requests
+- There must be a way to simplify the code...
 - Authentication
-- Remove setting default values
-- Better coding
 - GetExtensionAnalytic
 - GetGameAnalytics
 - CreateStreamMarker
