@@ -11,14 +11,11 @@ import (
 func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error) {
 	retUsers := userData{}
 
-	ids := qp.IDs
-	logins := qp.Logins
-
-	if len(ids) > 100 {
-		return nil, errors.New("GetUsers: A maximum of 100 ids can be specified")
+	if len(qp.IDs) > 100 {
+		qp.IDs = qp.IDs[:99]
 	}
-	if len(logins) > 100 {
-		return nil, errors.New("GetUsers: A maximum of 100 logins can be specified")
+	if len(qp.Logins) > 100 {
+		qp.Logins = qp.Logins[:99]
 	}
 
 	h := Header{}
@@ -26,7 +23,7 @@ func (c *Client) GetUsers(qp UserQueryParameters, authTkn string) ([]User, error
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
-		return nil, errors.New("GetUsers: An authorization token is needed")
+		return nil, errors.New("GetUsers: an authorization token is required")
 	}
 	uri := makeUri(BaseURL+UsersEP, qp)
 
@@ -60,16 +57,15 @@ func (c *Client) GetUserFollows(qp FollowQueryParameters) ([]UserFollows, int, e
 	retUsersFollows := userFollowData{}
 	var retTotal int
 
-	if qp.First > 100 {
-		return nil, retTotal, errors.New("GetUsersFollows: \"First\" parameter cannot be greater than 100")
-	}
+	qp.First = setDefaultValueIf(qp.First > 100, qp.First, 100).(int)
+	qp.First = setDefaultValueIf(qp.First <= 0, qp.First, 1).(int)
 
-	uri := makeUri(BaseURL+UsersEP+FollowsEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
 
+	uri := makeUri(BaseURL+UsersEP+FollowsEP, qp)
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, retTotal, err
@@ -99,25 +95,26 @@ func (c *Client) UpdateUser(description, authTkn string) ([]User, error) {
 		h.Value = "Bearer " + authTkn
 	}
 
+	// create the uri
 	uri, err := url.Parse(BaseURL + UsersEP)
 	if err != nil {
 		return nil, err
 	}
-
 	v := url.Values{}
 	v.Add("description", description)
 	uri.RawQuery = v.Encode()
 
+	// perform api call
 	res, err := c.apiCall("PUT", uri.String(), h)
 	if err != nil {
 		return nil, err
 	}
 	defer res.Body.Close()
 
+	// parse result
 	if res.Status != "200 OK" {
 		return nil, errors.New("UpdateUser returned status " + res.Status)
 	}
-
 	if err := parseResult(res, &retUsers); err != nil {
 		return nil, err
 	}

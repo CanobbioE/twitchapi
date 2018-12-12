@@ -14,10 +14,9 @@ func (c *Client) GetGames(qp GameQueryParameters) ([]Game, error) {
 
 	// cheking required fields
 	if isEmpty(ids) && isEmpty(names) {
-		return nil, errors.New("At least one id or name must be specified")
+		return nil, errors.New("GetGames: at least one id or name must be specified")
 	}
 	if (!isEmpty(ids)) && len(ids) > 100 {
-
 		return nil, errors.New("GetGames: A maximum of 100 ids can be specified")
 	}
 	if (!isEmpty(names)) && len(names) > 100 {
@@ -54,12 +53,8 @@ func (c *Client) GetTopGames(qp TopGameQueryParameters) ([]Game, error) {
 	retGames := gameData{}
 
 	// check for parameters boundries, set default min value
-	if qp.First > 100 {
-		return nil, errors.New("GetTopGames: \"First\" parameter cannot be greater than 100")
-	}
-	if qp.First <= 0 {
-		qp.First = 20
-	}
+	qp.First = setDefaultValueIf(qp.First > 100, qp.First, 100).(int)
+	qp.First = setDefaultValueIf(qp.First <= 0, qp.First, 20).(int)
 
 	// create the header
 	h := Header{
@@ -94,17 +89,15 @@ func (c *Client) GetGameAnalytics(id string, authTkn string) ([]Analytic, error)
 	uri := BaseURL + AnalyticsEP + GamesEP
 
 	// checking required parameters
-	if !isEmpty(id) {
-		uri += "?id=" + id
+	if err := checkRequiredFields("GetGameAnalytics", "all", id, authTkn); err != nil {
+		return nil, err
 	}
 
+	uri += "?id=" + id
 	// create the header
-	h := Header{}
-	if !isEmpty(authTkn) {
-		h.Field = "Authorization"
-		h.Value = "Bearer " + authTkn
-	} else {
-		return nil, errors.New("GetGameAnalytics: An authorization token is needed")
+	h := Header{
+		Field: "Authorization",
+		Value: "Bearer " + authTkn,
 	}
 
 	// perform API call

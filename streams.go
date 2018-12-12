@@ -8,28 +8,29 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 	retCursor := Cursor{}
 	retStreams := streamData{}
 
-	if qp.First > 100 {
-		return nil, retCursor, errors.New("GetStreams: \"First\" parameter cannot be greater than 100")
-	}
-	if qp.First <= 0 {
-		qp.First = 20
-	}
+	qp.First = setDefaultValueIf(qp.First > 100, qp.First, 100).(int)
+	qp.First = setDefaultValueIf(qp.First <= 0, qp.First, 20).(int)
+
 	if len(qp.Language) > 100 || len(qp.ComunityID) > 100 || len(qp.UserID) > 100 || len(qp.UserLogin) > 100 {
-		return nil, retCursor, errors.New("GetStreams: parameter cannot be greater than 100")
+		return nil, retCursor, errors.New("GetStreams: a parameter exceed the 100 characters limit")
 	}
 
-	uri := makeUri(BaseURL+StreamEP, qp)
 	h := Header{
 		Field: "Client-ID",
 		Value: c.ClientID,
 	}
 
+	uri := makeUri(BaseURL+StreamEP, qp)
 	res, err := c.apiCall("GET", uri, h)
 	if err != nil {
 		return nil, retCursor, err
 	}
 	defer res.Body.Close()
 
+	// parse the result
+	if res.Status != "200 OK" {
+		return nil, retCursor, errors.New("GetStreams returned status:" + res.Status)
+	}
 	if err := parseResult(res, &retStreams); err != nil {
 		return nil, retCursor, err
 	}
@@ -42,9 +43,9 @@ func (c *Client) GetStreams(qp StreamQueryParameters) ([]Stream, Cursor, error) 
 func (c *Client) GetStreamsMetadata(qp StreamQueryParameters) ([]StreamMetadata, Cursor, error) {
 	retCursor := Cursor{}
 	retMetaStreams := metaData{}
-	if qp.First > 100 {
-		return nil, retCursor, errors.New("\"First\" parameter cannot be greater than 100")
-	}
+
+	qp.First = setDefaultValueIf(qp.First > 100, qp.First, 100).(int)
+	qp.First = setDefaultValueIf(qp.First <= 0, qp.First, 20).(int)
 
 	uri := makeUri(BaseURL+StreamEP, qp)
 	h := Header{

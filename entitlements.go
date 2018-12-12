@@ -8,14 +8,11 @@ import "errors"
 func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParameters, authTkn string) (string, error) {
 
 	// check parameters boundries
-	ml := len(qp.ManifestID)
-	if ml > 64 || ml < 1 {
-		return "", errors.New("Manifest ID's length must be between 1 and 64")
+	if err := isValid("ManifestID", len(qp.ManifestID), makeRange(1, 64)); err != nil {
+		return "", errors.New("manifest ID's length must be between 1 and 64")
 	}
-
-	err := isValid("type", qp.Type, []string{"bulk_drops_grant"})
-	if err != nil {
-		return "", errors.New("Only \"bulk_drops_grant\" supported as entitle type")
+	if err := isValid("type", qp.Type, []string{"bulk_drops_grant"}); err != nil {
+		return "", err
 	}
 
 	// create the header
@@ -24,7 +21,7 @@ func (c *Client) CreateEntitlementGrantsUploadURL(qp EntitlementURLQueryParamete
 		h.Field = "Authorization"
 		h.Value = "Bearer " + authTkn
 	} else {
-		return "", errors.New("CreateEntitlementGrantsUploadURL: An authorization token is needed")
+		return "", errors.New("CreateEntitlementGrantsUploadURL: an authorization token is needed")
 	}
 
 	// perform API call

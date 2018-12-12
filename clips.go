@@ -11,7 +11,7 @@ func (c *Client) CreateClip(broadcasterID, authTkn string) ([]ClipInfo, error) {
 	retClipInfo := clipInfoData{}
 	uri := BaseURL + ClipsEP
 
-	if err := checkRequiredFields("CreateClip", broadcasterID, authTkn); err != nil {
+	if err := checkRequiredFields("CreateClip", "all", broadcasterID, authTkn); err != nil {
 		return nil, err
 	}
 	uri += "?broadcaster_id=" + broadcasterID
@@ -45,9 +45,10 @@ func (c *Client) GetClip(qp ClipQueryParameter) ([]Clip, Cursor, error) {
 	retClip := clipData{}
 
 	// checking required fields
-	if isEmpty(qp.BroadcasterID) && isEmpty(qp.GameID) && isEmpty(qp.ID) {
-		err := errors.New("GetClip: at least one id must be specified")
-		return []Clip{}, Cursor{}, err
+	err := checkRequiredFields("GetClip", "any", qp.BroadcasterID, qp.GameID, qp.ID)
+	if err != nil {
+		e := errors.New("GetClip: at least one id must be specified")
+		return []Clip{}, Cursor{}, e
 	}
 
 	if !isEmpty(qp.First) && (qp.First > 100 || qp.First < 0) {

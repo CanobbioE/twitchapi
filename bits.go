@@ -13,7 +13,7 @@ func (c *Client) GetBitsLeaderboard(qp BitsQueryParameters, authTkn string) ([]L
 	qp.Count = setDefaultValueIf(qp.Count > 100, &qp.Count, 100).(int)
 
 	// checking for required fields
-	if err := checkRequiredFields("GetBitsLeaderboard", qp.Period); err != nil {
+	if err := checkRequiredFields("GetBitsLeaderboard", "all", qp.Period); err != nil {
 		qp.Period = "all"
 	}
 	valid := []string{"all", "day", "week", "month", "year"}

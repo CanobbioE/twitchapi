@@ -1,7 +1,6 @@
 package twitchapi
 
 import (
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -15,34 +14,23 @@ func (c *Client) GetVideos(qp VideoQueryParameters) ([]Video, Cursor, error) {
 	var uri string
 
 	if isEmpty(qp.ID) {
-		var err error
 
 		// default values
-		if isEmpty(qp.Period) {
-			qp.Period = "all"
-		}
-		if isEmpty(qp.Sort) {
-			qp.Sort = "time"
-		}
-		if isEmpty(qp.Type) {
-			qp.Type = "all"
-		}
+		qp.Period = setDefaultValueIf(isEmpty(qp.Period), qp.Period, "all").(string)
+		qp.Sort = setDefaultValueIf(isEmpty(qp.Sort), qp.Sort, "time").(string)
+		qp.Type = setDefaultValueIf(isEmpty(qp.Type), qp.Type, "all").(string)
+		qp.First = setDefaultValueIf(qp.First > 100, qp.First, 100).(int)
+		qp.First = setDefaultValueIf(qp.First <= 0, qp.First, 20).(int)
 
 		// check parameters
-		err = isValid("period", qp.Period, []string{"all", "day", "month", "week"})
-		if err != nil {
+		if err := isValid("period", qp.Period, []string{"all", "day", "month", "week"}); err != nil {
 			return nil, retCursor, err
 		}
-		err = isValid("sort", qp.Sort, []string{"time", "trending", "views"})
-		if err != nil {
+		if err := isValid("sort", qp.Sort, []string{"time", "trending", "views"}); err != nil {
 			return nil, retCursor, err
 		}
-		err = isValid("type", qp.Type, []string{"all", "upload", "archive", "highlight"})
-		if err != nil {
+		if err := isValid("type", qp.Type, []string{"all", "upload", "archive", "highlight"}); err != nil {
 			return nil, retCursor, err
-		}
-		if qp.First > 100 {
-			return nil, retCursor, errors.New("GetVideos: \"First\" parameter cannot be greater than 100")
 		}
 		uri = makeUri(BaseURL+VideosEP, qp)
 
