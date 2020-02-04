@@ -4,6 +4,9 @@
 
 # TwitchAPI
 
+# THIS IS NOT UP TO DATE
+This project is no longer up to date with the newest endpoints that twitch API offers. Furthermore, now that I feel more confident with Go I am working on a better, cooler and possibly easier to use version of this.
+
 ## Description
 This project is a go wrapper for the [New Twitch API](https://dev.twitch.tv/docs/api).  
 The package provides a set of functcions to perform calls to the new Twitch API.  
